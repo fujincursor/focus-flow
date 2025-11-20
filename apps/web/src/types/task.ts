@@ -19,6 +19,7 @@ export const taskSchema = z.object({
   estimated_duration: z.number().int().min(1).max(1440).nullable().optional(), // 1-1440 minutes (24 hours)
   is_completed: z.boolean(),
   completed_at: z.string().datetime().nullable().optional(),
+  display_order: z.number().int().default(0),
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
 })
@@ -57,6 +58,7 @@ export type TaskRow = {
   estimated_duration: number | null
   is_completed: boolean
   completed_at: string | null
+  display_order: number
   created_at: string
   updated_at: string
 }
