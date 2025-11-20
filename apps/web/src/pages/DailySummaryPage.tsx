@@ -1,12 +1,21 @@
 import { useEffect, useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Loader2, TrendingUp, CheckCircle2, Clock, Target } from 'lucide-react'
-import { getRecentSummaries, getSummaryWithTasks } from '@/services/summaryService'
+import { Loader2, TrendingUp, CheckCircle2, Clock, Target, Calendar } from 'lucide-react'
+import { getRecentSummaries, getSummaryWithTasks, getWeekSummary } from '@/services/summaryService'
 import type { DailySummary, DailySummaryView } from '@/types/models'
+
+interface WeekSummary {
+  totalCompleted: number
+  totalCreated: number
+  totalWorkDuration: number
+  completionRate: number
+  dailySummaries: DailySummary[]
+}
 
 export function DailySummaryPage() {
   const [todaySummary, setTodaySummary] = useState<DailySummaryView | null>(null)
+  const [weekSummary, setWeekSummary] = useState<WeekSummary | null>(null)
   const [recentSummaries, setRecentSummaries] = useState<DailySummary[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -15,11 +24,13 @@ export function DailySummaryPage() {
       setIsLoading(true)
       try {
         const today = new Date().toISOString().split('T')[0]
-        const [todayData, recentData] = await Promise.all([
+        const [todayData, weekData, recentData] = await Promise.all([
           getSummaryWithTasks(today),
+          getWeekSummary(),
           getRecentSummaries(7),
         ])
         setTodaySummary(todayData)
+        setWeekSummary(weekData)
         setRecentSummaries(recentData)
       } catch (error) {
         console.error('Error fetching summary data:', error)
@@ -49,6 +60,7 @@ export function DailySummaryPage() {
       <Tabs defaultValue="today" className="space-y-4">
         <TabsList>
           <TabsTrigger value="today">今日总结</TabsTrigger>
+          <TabsTrigger value="week">本周总结</TabsTrigger>
           <TabsTrigger value="recent">最近7天</TabsTrigger>
         </TabsList>
 
@@ -165,6 +177,128 @@ export function DailySummaryPage() {
                       ))}
                     </div>
                   )}
+                </CardContent>
+              </Card>
+            </>
+          )}
+        </TabsContent>
+
+        <TabsContent value="week" className="space-y-4">
+          {!weekSummary || weekSummary.dailySummaries.length === 0 ? (
+            <Card>
+              <CardContent className="flex h-[300px] items-center justify-center">
+                <div className="text-center space-y-2">
+                  <p className="text-lg font-medium">本周暂无数据</p>
+                  <p className="text-sm text-muted-foreground">完成任务后，这里会显示您的本周统计</p>
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <>
+              {/* Week Stats Cards */}
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">本周完成</CardTitle>
+                    <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{weekSummary.totalCompleted}</div>
+                    <p className="text-xs text-muted-foreground">
+                      共创建 {weekSummary.totalCreated} 个任务
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">周完成率</CardTitle>
+                    <Target className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{weekSummary.completionRate}%</div>
+                    <p className="text-xs text-muted-foreground">
+                      {weekSummary.completionRate >= 70 ? '本周表现优秀！' : '继续努力！'}
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">周工作时长</CardTitle>
+                    <Clock className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">
+                      {weekSummary.totalWorkDuration > 0
+                        ? `${Math.floor(weekSummary.totalWorkDuration / 60)}h ${weekSummary.totalWorkDuration % 60}m`
+                        : '0h 0m'}
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      预计总时长
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">日均完成</CardTitle>
+                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">
+                      {weekSummary.dailySummaries.length > 0
+                        ? Math.round(weekSummary.totalCompleted / weekSummary.dailySummaries.length * 10) / 10
+                        : 0}
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      个任务/天
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Daily Breakdown */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>每日明细</CardTitle>
+                  <CardDescription>本周各天的完成情况</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {weekSummary.dailySummaries.map((summary) => (
+                      <div
+                        key={summary.id}
+                        className="flex items-center justify-between rounded-lg border p-4"
+                      >
+                        <div className="space-y-1">
+                          <p className="text-sm font-medium">
+                            {new Date(summary.date).toLocaleDateString('zh-CN', {
+                              month: 'long',
+                              day: 'numeric',
+                              weekday: 'short',
+                            })}
+                          </p>
+                          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              <CheckCircle2 className="h-3 w-3" />
+                              {summary.completed_tasks_count} 个任务
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              {summary.total_work_duration > 0
+                                ? `${Math.floor(summary.total_work_duration / 60)}h ${summary.total_work_duration % 60}m`
+                                : '0h 0m'}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-2xl font-bold">{summary.completion_rate}%</p>
+                          <p className="text-xs text-muted-foreground">完成率</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </CardContent>
               </Card>
             </>

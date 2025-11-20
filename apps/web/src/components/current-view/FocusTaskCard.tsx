@@ -1,4 +1,4 @@
-import { Check, Clock, Edit, ChevronRight } from 'lucide-react'
+import { Check, Clock, Edit, ChevronRight, SkipForward } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -100,25 +100,28 @@ export function FocusTaskCard({
           <Check className="mr-2 h-5 w-5" />
           完成任务
         </Button>
-        <Button
-          onClick={onDefer}
-          variant="outline"
-          size="lg"
-          className="w-full sm:w-auto"
-        >
-          延后
-        </Button>
-        {onNext && (
+        <div className="flex gap-3 w-full sm:w-auto">
           <Button
-            onClick={onNext}
-            variant="outline"
+            onClick={onDefer}
+            variant="secondary"
             size="lg"
-            className="w-full sm:w-auto"
+            className="flex-1 sm:flex-none"
           >
-            <span>下一个</span>
-            <ChevronRight className="ml-2 h-5 w-5" />
+            <SkipForward className="mr-2 h-5 w-5" />
+            跳过
           </Button>
-        )}
+          {onNext && (
+            <Button
+              onClick={onNext}
+              variant="outline"
+              size="lg"
+              className="flex-1 sm:flex-none"
+            >
+              <span>下一个</span>
+              <ChevronRight className="ml-2 h-5 w-5" />
+            </Button>
+          )}
+        </div>
       </CardFooter>
     </Card>
   )

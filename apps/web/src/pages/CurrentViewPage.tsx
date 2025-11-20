@@ -4,6 +4,7 @@ import { useSettingsStore } from '@/stores/settingsStore'
 import { getCurrentTasks } from '@/lib/currentTaskFilter'
 import { FocusTaskCard } from '@/components/current-view'
 import { Button } from '@/components/ui/button'
+import { Progress } from '@/components/ui/progress'
 import { Loader2, CheckCircle2, Plus, WifiOff } from 'lucide-react'
 import { CreateTaskDialog } from '@/components/tasks'
 import { useTaskRealtime, useOnlineStatus } from '@/hooks'
@@ -223,9 +224,25 @@ export function CurrentViewPage() {
         </div>
       )}
 
-      {/* Current task counter */}
-      <div className="text-center text-sm text-muted-foreground">
-        任务 {currentTaskIndex + 1} / {currentTasks.length}
+      {/* Progress indicator */}
+      <div className="max-w-2xl mx-auto space-y-3">
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-muted-foreground">
+            任务进度
+          </span>
+          <span className="font-medium">
+            {currentTaskIndex + 1} / {currentTasks.length}
+          </span>
+        </div>
+        <Progress
+          value={((currentTaskIndex + 1) / currentTasks.length) * 100}
+          className="h-2"
+        />
+        <div className="text-xs text-muted-foreground text-center">
+          {currentTasks.length - currentTaskIndex - 1 === 0
+            ? '这是最后一个任务了！'
+            : `还有 ${currentTasks.length - currentTaskIndex - 1} 个任务待处理`}
+        </div>
       </div>
 
       {/* Focus task card */}

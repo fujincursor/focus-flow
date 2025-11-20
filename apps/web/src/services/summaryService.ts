@@ -117,6 +117,65 @@ export async function updateReflectionNotes(date: string, notes: string): Promis
 }
 
 /**
+ * Get current week's summary (aggregated)
+ */
+export async function getWeekSummary(): Promise<{
+  totalCompleted: number
+  totalCreated: number
+  totalWorkDuration: number
+  completionRate: number
+  dailySummaries: DailySummary[]
+} | null> {
+  const { data: user } = await supabase.auth.getUser()
+  if (!user.user) return null
+
+  // Get Monday of current week
+  const today = new Date()
+  const dayOfWeek = today.getDay()
+  const monday = new Date(today)
+  monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1))
+  monday.setHours(0, 0, 0, 0)
+
+  const { data, error } = await supabase
+    .from('daily_summaries')
+    .select('*')
+    .eq('user_id', user.user.id)
+    .gte('date', monday.toISOString().split('T')[0])
+    .lte('date', today.toISOString().split('T')[0])
+    .order('date', { ascending: true })
+
+  if (error) {
+    console.error('Error fetching week summary:', error)
+    return null
+  }
+
+  if (!data || data.length === 0) {
+    return {
+      totalCompleted: 0,
+      totalCreated: 0,
+      totalWorkDuration: 0,
+      completionRate: 0,
+      dailySummaries: [],
+    }
+  }
+
+  // Aggregate data
+  const summaries = data as DailySummary[]
+  const totalCompleted = summaries.reduce((sum, day) => sum + day.completed_tasks_count, 0)
+  const totalCreated = summaries.reduce((sum, day) => sum + day.created_tasks_count, 0)
+  const totalWorkDuration = summaries.reduce((sum, day) => sum + (day.total_work_duration || 0), 0)
+  const completionRate = calculateCompletionRate(totalCompleted, totalCreated)
+
+  return {
+    totalCompleted,
+    totalCreated,
+    totalWorkDuration,
+    completionRate,
+    dailySummaries: summaries,
+  }
+}
+
+/**
  * Calculate completion rate
  */
 export function calculateCompletionRate(completed: number, created: number): number {
