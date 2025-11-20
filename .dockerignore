@@ -1,0 +1,16 @@
+node_modules
+dist
+.git
+.github
+.vscode
+.env
+.env.local
+*.log
+coverage
+.DS_Store
+.husky
+supabase/.temp
+apps/web/dist
+apps/web/node_modules
+packages/shared/dist
+packages/shared/node_modules

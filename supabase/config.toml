@@ -1,0 +1,25 @@
+# Supabase local development configuration
+
+[api]
+# Port for RESTful API
+port = 54321
+# Schemas to expose in your API. Tables, views and stored procedures in this schema will get API endpoints.
+schemas = ["public", "storage", "graphql_public"]
+# Extra schemas to add to the search_path of every request.
+extra_search_path = ["public", "extensions"]
+# The maximum number of rows returns from a view, table, or stored procedure.
+max_rows = 1000
+
+[db]
+# Port for PostgreSQL database
+port = 54322
+
+[studio]
+# Port for Supabase Studio
+port = 54323
+
+[auth]
+# Port for Supabase Auth
+port = 54324
+# Time (in seconds) for which an access token is valid
+site_url = "http://localhost:5173"

@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(tree:*)",
+      "Bash(pnpm install:*)",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm type-check:*)",
+      "Bash(pnpm add:*)",
+      "Bash(test:*)",
+      "Bash(pnpm supabase:start:*)",
+      "Bash(fc:*)",
+      "Bash(pnpm dev)",
+      "Bash(curl:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill:*)",
+      "Bash(npx shadcn@latest add:*)",
+      "Bash(nul)",
+      "Bash(dir /B \"d:\\bmad\\todo-list\\docs\\stories\" 2)",
+      "Bash(if not exist \"d:\\bmad\\todo-list\\docs\\stories\" mkdir \"d:\\bmad\\todo-list\\docs\\stories\")",
+      "Bash(dir:*)",
+      "Bash(cat:*)",
+      "Bash(git init:*)",
+      "Bash(git config:*)",
+      "Bash(pnpm prepare:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(npx eslint:*)",
+      "Bash(pnpm test:*)",
+      "Bash(pnpm --filter web test:*)",
+      "Bash(if not exist \"d:\\bmad\\todo-list\\apps\\web\\src\\pages\" mkdir \"d:\\bmad\\todo-list\\apps\\web\\src\\pages\")",
+      "SlashCommand(/BMad:agents:pm)",
+      "Bash(npx supabase:*)",
+      "Bash(src/types/database.types.generated.ts)",
+      "Bash(del appswebsrctypesdatabase.types.generated.ts 2)",
+      "Bash(README.md)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

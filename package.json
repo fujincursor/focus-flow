@@ -1,0 +1,31 @@
+{
+  "name": "focus-flow-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm --filter web dev",
+    "build": "pnpm --filter shared build && pnpm --filter web build",
+    "preview": "pnpm --filter web preview",
+    "lint": "pnpm -r lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "type-check": "pnpm -r type-check",
+    "test": "pnpm -r test",
+    "test:watch": "pnpm -r test:watch",
+    "test:e2e": "pnpm --filter web test:e2e",
+    "supabase:start": "cd apps/web && supabase start",
+    "supabase:stop": "cd apps/web && supabase stop",
+    "supabase:migrate": "cd apps/web && supabase db push",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "prettier": "^3.1.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "@types/node": "^20.10.6"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}
