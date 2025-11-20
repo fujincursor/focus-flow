@@ -2,6 +2,10 @@
 # 使用方法: .\scripts\deploy.ps1 [环境]
 # 环境选项: local | vercel | docker
 
+# 设置输出编码为 UTF-8
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+
 param(
     [Parameter(Position=0)]
     [ValidateSet('local', 'vercel', 'docker')]
@@ -191,3 +195,4 @@ function Main {
 
 # 执行主函数
 Main
+

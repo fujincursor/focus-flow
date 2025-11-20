@@ -44,6 +44,7 @@ export const updateTaskSchema = z.object({
   time_sensitivity: z.enum(['today', 'this_week', 'anytime']).optional(),
   estimated_duration: z.number().int().min(1).max(1440).nullable().optional(),
   is_completed: z.boolean().optional(),
+  display_order: z.number().int().optional(),
 })
 
 export type UpdateTaskInput = z.infer<typeof updateTaskSchema>

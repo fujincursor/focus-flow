@@ -12,6 +12,7 @@ function createTask(overrides: Partial<Task> = {}): Task {
     is_completed: false,
     time_sensitivity: 'today',
     estimated_duration: null,
+    display_order: 0,
     completed_at: null,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),

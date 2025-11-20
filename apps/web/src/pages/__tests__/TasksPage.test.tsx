@@ -29,6 +29,17 @@ vi.mock('@/components/tasks', () => ({
       ))}
     </div>
   ),
+  SortableTaskList: ({ tasks, onToggleComplete, onDelete }: any) => (
+    <div data-testid="task-list">
+      {tasks.map((task: Task) => (
+        <div key={task.id} data-testid={`task-${task.id}`}>
+          <span>{task.title}</span>
+          <button onClick={() => onToggleComplete(task.id, !task.is_completed)}>Toggle</button>
+          <button onClick={() => onDelete(task.id)}>Delete</button>
+        </div>
+      ))}
+    </div>
+  ),
 }))
 
 const mockTasks: Task[] = [
@@ -40,6 +51,7 @@ const mockTasks: Task[] = [
     is_completed: false,
     time_sensitivity: 'today',
     estimated_duration: 60,
+    display_order: 0,
     completed_at: null,
     created_at: '2024-01-01T10:00:00Z',
     updated_at: '2024-01-01T10:00:00Z',
@@ -52,6 +64,7 @@ const mockTasks: Task[] = [
     is_completed: false,
     time_sensitivity: 'this_week',
     estimated_duration: 120,
+    display_order: 1,
     completed_at: null,
     created_at: '2024-01-01T11:00:00Z',
     updated_at: '2024-01-01T11:00:00Z',
@@ -64,6 +77,7 @@ const mockTasks: Task[] = [
     is_completed: false,
     time_sensitivity: 'anytime',
     estimated_duration: null,
+    display_order: 2,
     completed_at: null,
     created_at: '2024-01-01T12:00:00Z',
     updated_at: '2024-01-01T12:00:00Z',
@@ -76,6 +90,7 @@ const mockTasks: Task[] = [
     is_completed: true,
     time_sensitivity: 'today',
     estimated_duration: 30,
+    display_order: 3,
     completed_at: '2024-01-01T15:00:00Z',
     created_at: '2024-01-01T09:00:00Z',
     updated_at: '2024-01-01T15:00:00Z',

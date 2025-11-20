@@ -18,6 +18,7 @@ interface TaskStore {
   updateTask: (taskId: string, input: UpdateTaskInput) => Promise<Task | null>
   removeTask: (taskId: string) => Promise<boolean>
   toggleTaskCompletion: (taskId: string, completed: boolean) => Promise<Task | null>
+  reorderTasks: (taskId: string, newOrder: number) => Promise<void>
   setError: (error: string | null) => void
   clearTasks: () => void
   setOnLocalUpdate: (callback: ((taskId: string) => void) | null) => void
@@ -65,6 +66,7 @@ export const useTaskStore = create<TaskStore>()(
           estimated_duration: input.estimated_duration || null,
           is_completed: false,
           completed_at: null,
+          display_order: 0,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         }
@@ -196,6 +198,31 @@ export const useTaskStore = create<TaskStore>()(
       // Toggle task completion status (Optimistic UI)
       toggleTaskCompletion: async (taskId: string, completed: boolean) => {
         return get().updateTask(taskId, { is_completed: completed })
+      },
+
+      // Reorder tasks (for drag-and-drop)
+      reorderTasks: async (taskId: string, newOrder: number) => {
+        // Optimistically update local state
+        set(state => ({
+          tasks: state.tasks
+            .map(t => (t.id === taskId ? { ...t, display_order: newOrder } : t))
+            .sort((a, b) => (a.display_order || 0) - (b.display_order || 0)),
+        }))
+
+        try {
+          await taskService.updateTask(taskId, { display_order: newOrder })
+
+          // Notify realtime hook about local update
+          const { onLocalUpdate } = get()
+          if (onLocalUpdate) {
+            onLocalUpdate(taskId)
+          }
+        } catch (error) {
+          console.error('reorderTasks error:', error)
+          set({ error: error instanceof Error ? error.message : '重新排序失败' })
+          // Refetch tasks to restore correct order
+          await get().fetchTasks()
+        }
       },
 
       // Set error message

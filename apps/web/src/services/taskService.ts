@@ -29,6 +29,7 @@ function rowToTask(row: TaskRow): Task {
     estimated_duration: row.estimated_duration,
     is_completed: row.is_completed,
     completed_at: row.completed_at,
+    display_order: row.display_order,
     created_at: row.created_at,
     updated_at: row.updated_at,
   }

@@ -5,6 +5,7 @@ import {
   DeleteConfirmDialog,
   EditTaskDialog,
   TaskList,
+  SortableTaskList,
 } from '@/components/tasks'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Input } from '@/components/ui/input'
@@ -19,6 +20,7 @@ export function TasksPage() {
     fetchTasks,
     toggleTaskCompletion,
     removeTask,
+    reorderTasks,
     getTodayTasks,
     getThisWeekTasks,
     getAnytimeTasks,
@@ -94,6 +96,11 @@ export function TasksPage() {
     setEditDialogOpen(true)
   }
 
+  // Handle task reorder (for drag-and-drop)
+  const handleReorder = async (taskId: string, newIndex: number) => {
+    await reorderTasks(taskId, newIndex)
+  }
+
   if (isLoading) {
     return (
       <div className="flex h-[400px] items-center justify-center">
@@ -164,8 +171,9 @@ export function TasksPage() {
         </TabsList>
 
         <TabsContent value="all" className="mt-6">
-          <TaskList
+          <SortableTaskList
             tasks={uncompletedTasks}
+            onReorder={handleReorder}
             onToggleComplete={handleToggleComplete}
             onDelete={handleDelete}
             onEdit={handleEdit}
@@ -185,8 +193,9 @@ export function TasksPage() {
         </TabsContent>
 
         <TabsContent value="today" className="mt-6">
-          <TaskList
+          <SortableTaskList
             tasks={todayTasks.filter(t => !t.is_completed)}
+            onReorder={handleReorder}
             onToggleComplete={handleToggleComplete}
             onDelete={handleDelete}
             onEdit={handleEdit}
@@ -194,8 +203,9 @@ export function TasksPage() {
         </TabsContent>
 
         <TabsContent value="this_week" className="mt-6">
-          <TaskList
+          <SortableTaskList
             tasks={thisWeekTasks.filter(t => !t.is_completed)}
+            onReorder={handleReorder}
             onToggleComplete={handleToggleComplete}
             onDelete={handleDelete}
             onEdit={handleEdit}
@@ -203,8 +213,9 @@ export function TasksPage() {
         </TabsContent>
 
         <TabsContent value="anytime" className="mt-6">
-          <TaskList
+          <SortableTaskList
             tasks={anytimeTasks.filter(t => !t.is_completed)}
+            onReorder={handleReorder}
             onToggleComplete={handleToggleComplete}
             onDelete={handleDelete}
             onEdit={handleEdit}

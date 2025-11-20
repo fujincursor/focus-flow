@@ -33,7 +33,14 @@
       "Bash(npx supabase:*)",
       "Bash(src/types/database.types.generated.ts)",
       "Bash(del appswebsrctypesdatabase.types.generated.ts 2)",
-      "Bash(README.md)"
+      "Bash(README.md)",
+      "Bash(for file in docs/stories/story-*.md)",
+      "Bash(do echo '=== $(basename $file) ===')",
+      "Bash(done)",
+      "Bash(xargs:*)",
+      "Bash(pnpm --filter web add:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []
