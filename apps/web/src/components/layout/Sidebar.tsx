@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { Home, CheckSquare, Calendar, BarChart3, X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
@@ -11,32 +12,33 @@ interface SidebarProps {
 
 const navItems = [
   {
-    title: '当下任务',
+    titleKey: 'navigation.currentView',
     href: '/',
     icon: Home,
-    description: '专注于此刻最重要的事',
+    descriptionKey: 'navigation.currentViewDescription',
   },
   {
-    title: '所有任务',
+    titleKey: 'navigation.tasks',
     href: '/tasks',
     icon: CheckSquare,
-    description: '查看和管理所有任务',
+    descriptionKey: 'navigation.tasksDescription',
   },
   {
-    title: '每日总结',
+    titleKey: 'navigation.dailySummary',
     href: '/daily-summary',
     icon: Calendar,
-    description: '回顾每日完成情况',
+    descriptionKey: 'navigation.dailySummaryDescription',
   },
   {
-    title: '数据统计',
+    titleKey: 'navigation.statistics',
     href: '/statistics',
     icon: BarChart3,
-    description: '查看长期进度趋势',
+    descriptionKey: 'navigation.statisticsDescription',
   },
 ]
 
 export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
+  const { t } = useTranslation('common')
   return (
     <>
       {/* 移动端遮罩层 */}
@@ -61,7 +63,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                 <span className="text-lg font-bold">F</span>
               </div>
-              <h2 className="text-lg font-semibold">菜单</h2>
+              <h2 className="text-lg font-semibold">{t('navigation.menu')}</h2>
             </div>
             <Button variant="ghost" size="icon" onClick={onClose}>
               <X className="h-5 w-5" />
@@ -93,9 +95,9 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                   <>
                     <item.icon className="h-5 w-5 shrink-0" />
                     <div className="flex flex-col">
-                      <span>{item.title}</span>
+                      <span>{t(item.titleKey)}</span>
                       {!isActive && (
-                        <span className="text-xs text-muted-foreground">{item.description}</span>
+                        <span className="text-xs text-muted-foreground">{t(item.descriptionKey)}</span>
                       )}
                     </div>
                   </>

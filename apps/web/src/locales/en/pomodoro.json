@@ -1,0 +1,41 @@
+{
+  "timer": {
+    "idle": "Pomodoro Timer",
+    "working": "Working",
+    "paused": "Paused",
+    "resting": "Rest Time",
+    "timeRemaining": "Time Remaining",
+    "startWork": "Start",
+    "startRest": "Start Rest",
+    "pause": "Pause",
+    "resume": "Resume",
+    "stop": "Stop",
+    "minutes": "{{count}} min",
+    "seconds": "{{count}} sec",
+    "workBadge": "Work",
+    "restBadge": "Rest",
+    "startAriaLabel": "Start Pomodoro timer",
+    "pauseAriaLabel": "Pause",
+    "stopAriaLabel": "Stop",
+    "resumeAriaLabel": "Resume"
+  },
+  "workComplete": {
+    "title": "Work Session Complete!",
+    "description": "Great job! You've completed a focused work session.",
+    "takeBreak": "Take a Break",
+    "continueWorking": "Continue Working",
+    "nextTask": "Next Task"
+  },
+  "restComplete": {
+    "title": "Rest Complete!",
+    "description": "Break time is over. Ready to continue working?",
+    "startWork": "Start Working",
+    "skipWork": "Skip for Now"
+  },
+  "session": {
+    "workSession": "Work Session",
+    "restSession": "Rest Session",
+    "completed": "Completed",
+    "interrupted": "Interrupted"
+  }
+}

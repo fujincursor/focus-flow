@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core'
 import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
@@ -15,12 +16,6 @@ interface SortableTaskListProps {
   onEdit?: (task: Task) => void
 }
 
-const TIME_SENSITIVITY_LABELS = {
-  today: '今天',
-  this_week: '本周',
-  anytime: '任何时候',
-} as const
-
 const TIME_SENSITIVITY_COLORS = {
   today: 'text-red-600 bg-red-50',
   this_week: 'text-orange-600 bg-orange-50',
@@ -28,6 +23,7 @@ const TIME_SENSITIVITY_COLORS = {
 } as const
 
 export function SortableTaskList({ tasks, onReorder, onToggleComplete, onDelete, onEdit }: SortableTaskListProps) {
+  const { t } = useTranslation('tasks')
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -52,9 +48,9 @@ export function SortableTaskList({ tasks, onReorder, onToggleComplete, onDelete,
     return (
       <div className="flex h-[400px] items-center justify-center rounded-lg border border-dashed">
         <div className="text-center">
-          <h3 className="text-lg font-medium">暂无任务</h3>
+          <h3 className="text-lg font-medium">{t('empty.title')}</h3>
           <p className="mt-2 text-sm text-muted-foreground">
-            点击"创建任务"开始添加您的第一个任务
+            {t('empty.description')}
           </p>
         </div>
       </div>
@@ -88,6 +84,7 @@ interface SortableTaskItemProps {
 }
 
 function SortableTaskItem({ task, onToggleComplete, onDelete, onEdit }: SortableTaskItemProps) {
+  const { t } = useTranslation('tasks')
   const {
     attributes,
     listeners,
@@ -116,7 +113,7 @@ function SortableTaskItem({ task, onToggleComplete, onDelete, onEdit }: Sortable
           {...attributes}
           {...listeners}
           className="mt-1 cursor-grab touch-none hover:text-primary active:cursor-grabbing"
-          aria-label="拖拽排序"
+          aria-label={t('actions.dragToReorder')}
         >
           <GripVertical className="h-5 w-5 text-muted-foreground" />
         </button>
@@ -151,7 +148,7 @@ function SortableTaskItem({ task, onToggleComplete, onDelete, onEdit }: Sortable
                 onClick={() => onEdit(task)}
               >
                 <Pencil className="h-4 w-4" />
-                <span className="sr-only">编辑任务</span>
+                <span className="sr-only">{t('actions.edit')}</span>
               </Button>
             )}
 
@@ -163,7 +160,7 @@ function SortableTaskItem({ task, onToggleComplete, onDelete, onEdit }: Sortable
               onClick={() => onDelete(task.id)}
             >
               <Trash2 className="h-4 w-4 text-destructive" />
-              <span className="sr-only">删除任务</span>
+              <span className="sr-only">{t('actions.delete')}</span>
             </Button>
           </div>
         </div>
@@ -187,7 +184,7 @@ function SortableTaskItem({ task, onToggleComplete, onDelete, onEdit }: Sortable
               TIME_SENSITIVITY_COLORS[task.time_sensitivity]
             }`}
           >
-            {TIME_SENSITIVITY_LABELS[task.time_sensitivity]}
+            {t(`timeSensitivity.${task.time_sensitivity}`)}
           </span>
 
           {/* Estimated duration */}
@@ -201,7 +198,7 @@ function SortableTaskItem({ task, onToggleComplete, onDelete, onEdit }: Sortable
           {/* Completed timestamp */}
           {task.is_completed && task.completed_at && (
             <span className="text-muted-foreground">
-              完成于 {new Date(task.completed_at).toLocaleString('zh-CN')}
+              {t('completedAt')} {new Date(task.completed_at).toLocaleString()}
             </span>
           )}
         </div>

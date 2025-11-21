@@ -1,0 +1,96 @@
+{
+  "loading": "加载任务中...",
+  "page": {
+    "title": "当下专注",
+    "subtitle": "专注于此刻，一次只做一件事"
+  },
+  "noTask": {
+    "title": "太棒了！",
+    "noTasksMessage": "还没有任务。创建您的第一个任务开始专注吧！",
+    "allDoneMessage": "所有当前任务已处理完毕。享受您的空闲时光！",
+    "createButton": "创建新任务",
+    "description": "从任务列表中选择一个任务开始专注",
+    "button": "前往任务"
+  },
+  "task": {
+    "currentTask": "当前任务",
+    "description": "描述",
+    "estimatedDuration": "预计时长",
+    "timeSpent": "已用时间",
+    "pomodorosCompleted": "已完成番茄钟",
+    "minutes": "分钟",
+    "pomodoros": "个番茄钟"
+  },
+  "timer": {
+    "work": "工作",
+    "shortBreak": "短休息",
+    "longBreak": "长休息",
+    "start": "开始",
+    "pause": "暂停",
+    "resume": "继续",
+    "stop": "停止",
+    "skip": "跳过",
+    "complete": "完成任务"
+  },
+  "status": {
+    "ready": "准备开始",
+    "working": "专注时间！",
+    "paused": "已暂停",
+    "breakTime": "休息时间！",
+    "completed": "时段已完成！",
+    "offline": "离线模式"
+  },
+  "progress": {
+    "label": "任务进度",
+    "lastTask": "这是最后一个任务了！",
+    "remaining": "还有 {{count}} 个任务待处理"
+  },
+  "shortcuts": {
+    "hint": "提示：使用键盘快捷键提高效率",
+    "complete": "完成任务",
+    "next": "下一个",
+    "previous": "上一个",
+    "summary": "快捷键：Space 完成 | →/N 下一个 | ←/P 上一个"
+  },
+  "navigation": {
+    "previous": "上一个",
+    "next": "下一个"
+  },
+  "celebration": {
+    "message": "太棒了！"
+  },
+  "actions": {
+    "completeTask": "标记任务为完成",
+    "switchTask": "切换到其他任务",
+    "abandonTask": "放弃当前任务"
+  },
+  "dialogs": {
+    "completeTask": {
+      "title": "完成任务",
+      "description": "将此任务标记为完成并继续下一个任务？",
+      "confirm": "完成",
+      "cancel": "取消"
+    },
+    "switchTask": {
+      "title": "切换任务",
+      "description": "您当前的进度将被保存。切换到其他任务？",
+      "confirm": "切换",
+      "cancel": "留下"
+    },
+    "abandonTask": {
+      "title": "放弃任务",
+      "description": "停止处理此任务而不标记为完成？",
+      "confirm": "放弃",
+      "cancel": "取消"
+    }
+  },
+  "messages": {
+    "taskCompleted": "任务完成成功！",
+    "taskSwitched": "已切换到新任务",
+    "sessionStarted": "专注时段已开始",
+    "sessionPaused": "时段已暂停",
+    "sessionResumed": "时段已继续",
+    "breakStarted": "休息已开始",
+    "pomodoroCompleted": "番茄钟完成！做得好！"
+  }
+}

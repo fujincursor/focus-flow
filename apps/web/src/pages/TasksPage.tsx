@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useTaskStore } from '@/stores/taskStore'
 import {
   CreateTaskDialog,
@@ -14,6 +15,7 @@ import type { Task } from '@/types/task'
 import { useDebounce } from '@/hooks/useDebounce'
 
 export function TasksPage() {
+  const { t } = useTranslation('tasks')
   const {
     tasks,
     isLoading,
@@ -114,8 +116,8 @@ export function TasksPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">所有任务</h1>
-          <p className="text-muted-foreground">查看和管理您的所有任务</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('page.title')}</h1>
+          <p className="text-muted-foreground">{t('page.subtitle')}</p>
         </div>
         <CreateTaskDialog />
       </div>
@@ -142,11 +144,11 @@ export function TasksPage() {
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           type="text"
-          placeholder="搜索任务标题或描述..."
+          placeholder={t('search.placeholder')}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="pl-9"
-          aria-label="搜索任务"
+          aria-label={t('search.placeholder')}
         />
       </div>
 
@@ -154,19 +156,19 @@ export function TasksPage() {
       <Tabs defaultValue="all" className="w-full">
         <TabsList>
           <TabsTrigger value="all">
-            全部 ({uncompletedTasks.length + completedTasks.length})
+            {t('tabs.uncompleted')} ({uncompletedTasks.length + completedTasks.length})
           </TabsTrigger>
           <TabsTrigger value="today">
-            今天 ({todayTasks.length})
+            {t('tabs.today')} ({todayTasks.length})
           </TabsTrigger>
           <TabsTrigger value="this_week">
-            本周 ({thisWeekTasks.length})
+            {t('tabs.thisWeek')} ({thisWeekTasks.length})
           </TabsTrigger>
           <TabsTrigger value="anytime">
-            任何时候 ({anytimeTasks.length})
+            {t('tabs.anytime')} ({anytimeTasks.length})
           </TabsTrigger>
           <TabsTrigger value="completed">
-            已完成 ({completedTasks.length})
+            {t('tabs.completed')} ({completedTasks.length})
           </TabsTrigger>
         </TabsList>
 
@@ -181,7 +183,7 @@ export function TasksPage() {
           {completedTasks.length > 0 && (
             <div className="mt-8">
               <h2 className="mb-4 text-lg font-semibold text-muted-foreground">
-                已完成 ({completedTasks.length})
+                {t('tabs.completed')} ({completedTasks.length})
               </h2>
               <TaskList
                 tasks={completedTasks}

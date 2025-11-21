@@ -1,0 +1,59 @@
+{
+  "page": {
+    "title": "Settings",
+    "subtitle": "Manage your preferences"
+  },
+  "sections": {
+    "account": "Account",
+    "appearance": "Appearance",
+    "pomodoro": "Pomodoro Timer",
+    "notifications": "Notifications"
+  },
+  "account": {
+    "email": "Email",
+    "signOut": "Sign Out",
+    "signOutConfirm": "Are you sure you want to sign out?"
+  },
+  "appearance": {
+    "language": "Language",
+    "languageDescription": "Select your preferred language",
+    "theme": "Theme",
+    "themeDescription": "Choose your preferred theme",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System"
+  },
+  "pomodoro": {
+    "workDuration": "Work Duration",
+    "workDurationDescription": "Duration of each work session",
+    "shortBreak": "Short Break",
+    "shortBreakDescription": "Duration of short breaks",
+    "longBreak": "Long Break",
+    "longBreakDescription": "Duration of long breaks",
+    "sessionsBeforeLongBreak": "Sessions Before Long Break",
+    "sessionsBeforeLongBreakDescription": "Number of work sessions before a long break",
+    "autoStartBreaks": "Auto-start Breaks",
+    "autoStartBreaksDescription": "Automatically start break timers",
+    "autoStartPomodoros": "Auto-start Pomodoros",
+    "autoStartPomodorosDescription": "Automatically start next work session",
+    "minutes": "minutes",
+    "sessions": "sessions"
+  },
+  "notifications": {
+    "desktop": "Desktop Notifications",
+    "desktopDescription": "Show desktop notifications for timer events",
+    "sound": "Sound Alerts",
+    "soundDescription": "Play sound when timer completes"
+  },
+  "actions": {
+    "save": "Save Changes",
+    "cancel": "Cancel",
+    "reset": "Reset to Defaults"
+  },
+  "messages": {
+    "saveSuccess": "Settings saved successfully",
+    "saveError": "Failed to save settings",
+    "resetSuccess": "Settings reset to defaults",
+    "signOutSuccess": "Signed out successfully"
+  }
+}

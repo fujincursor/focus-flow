@@ -1,0 +1,103 @@
+{
+  "page": {
+    "title": "每日总结",
+    "subtitle": "回顾您的每日完成情况"
+  },
+  "tabs": {
+    "today": "今日总结",
+    "week": "本周总结",
+    "recent": "最近7天"
+  },
+  "common": {
+    "minutes": "分钟"
+  },
+  "today": {
+    "noData": "今日暂无数据",
+    "noDataHint": "完成任务后，这里会显示您的今日统计",
+    "completedTasks": "已完成任务",
+    "createdTasks": "共创建 {{count}} 个任务",
+    "completedPomodoros": "完成番茄钟",
+    "focusDuration": "专注时长",
+    "completionRate": "完成率",
+    "excellentPerformance": "表现优秀！",
+    "keepGoing": "继续加油！",
+    "workDuration": "工作时长",
+    "estimatedDuration": "预计时长",
+    "completedTasksList": "已完成的任务",
+    "completedTasksDescription": "今天完成的所有任务",
+    "noCompletedTasks": "暂无完成的任务",
+    "completedAt": "完成于"
+  },
+  "week": {
+    "noData": "本周暂无数据",
+    "noDataHint": "完成任务后，这里会显示您的本周统计",
+    "completed": "本周完成",
+    "created": "共创建 {{count}} 个任务",
+    "completionRate": "周完成率",
+    "excellentWeek": "本周表现优秀！",
+    "keepTrying": "继续努力！",
+    "workDuration": "周工作时长",
+    "estimatedTotal": "预计总时长",
+    "dailyAverage": "日均完成",
+    "tasksPerDay": "个任务/天",
+    "dailyBreakdown": "每日明细",
+    "dailyBreakdownDescription": "本周各天的完成情况",
+    "taskCount": "{{count}} 个任务",
+    "completionRateLabel": "完成率"
+  },
+  "recent": {
+    "noData": "暂无历史数据",
+    "noDataHint": "完成任务后，这里会显示您的历史统计",
+    "title": "最近7天统计",
+    "description": "您的每日完成情况一览",
+    "taskCount": "{{count}} 个任务",
+    "completionRate": "完成率"
+  },
+  "stats": {
+    "completedTasks": "完成任务",
+    "totalPomodoros": "番茄钟总数",
+    "focusTime": "专注时长",
+    "completionRate": "完成率"
+  },
+  "sections": {
+    "overview": "今日概览",
+    "tasks": "今日完成的任务",
+    "pomodoros": "番茄钟时段",
+    "insights": "数据洞察"
+  },
+  "tasks": {
+    "empty": "今天还没有完成任务",
+    "completedAt": "完成时间",
+    "duration": "时长",
+    "pomodoros": "个番茄钟"
+  },
+  "pomodoros": {
+    "empty": "今天还没有番茄钟时段",
+    "session": "时段",
+    "startTime": "开始时间",
+    "endTime": "结束时间",
+    "duration": "时长",
+    "taskName": "任务"
+  },
+  "insights": {
+    "productiveHours": "最高效时段",
+    "averageSessionLength": "平均时段时长",
+    "focusStreak": "连续专注天数",
+    "days": "天",
+    "minutes": "分钟",
+    "morning": "上午 (6:00-12:00)",
+    "afternoon": "下午 (12:00-18:00)",
+    "evening": "晚上 (18:00-24:00)",
+    "night": "深夜 (0:00-6:00)"
+  },
+  "navigation": {
+    "previousDay": "前一天",
+    "nextDay": "后一天",
+    "today": "今天"
+  },
+  "export": {
+    "button": "导出总结",
+    "pdf": "导出为 PDF",
+    "csv": "导出为 CSV"
+  }
+}

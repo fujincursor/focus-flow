@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Loader2, TrendingUp, CheckCircle2, Clock, Target, Calendar } from 'lucide-react'
+import { Loader2, CheckCircle2, Clock, Target, Calendar, Timer } from 'lucide-react'
 import { getRecentSummaries, getSummaryWithTasks, getWeekSummary } from '@/services/summaryService'
+import { getTodayPomodoroStats } from '@/services/pomodoroService'
 import type { DailySummary, DailySummaryView } from '@/types/models'
 
 interface WeekSummary {
@@ -14,9 +16,11 @@ interface WeekSummary {
 }
 
 export function DailySummaryPage() {
+  const { t } = useTranslation('summary')
   const [todaySummary, setTodaySummary] = useState<DailySummaryView | null>(null)
   const [weekSummary, setWeekSummary] = useState<WeekSummary | null>(null)
   const [recentSummaries, setRecentSummaries] = useState<DailySummary[]>([])
+  const [pomodoroStats, setPomodoroStats] = useState<{ completedCount: number; totalWorkDuration: number } | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -24,14 +28,16 @@ export function DailySummaryPage() {
       setIsLoading(true)
       try {
         const today = new Date().toISOString().split('T')[0]
-        const [todayData, weekData, recentData] = await Promise.all([
+        const [todayData, weekData, recentData, pomodoroData] = await Promise.all([
           getSummaryWithTasks(today),
           getWeekSummary(),
           getRecentSummaries(7),
+          getTodayPomodoroStats(),
         ])
         setTodaySummary(todayData)
         setWeekSummary(weekData)
         setRecentSummaries(recentData)
+        setPomodoroStats(pomodoroData)
       } catch (error) {
         console.error('Error fetching summary data:', error)
       } finally {
@@ -53,15 +59,15 @@ export function DailySummaryPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">每日总结</h1>
-        <p className="text-muted-foreground">回顾您的每日完成情况</p>
+        <h1 className="text-3xl font-bold tracking-tight">{t('page.title')}</h1>
+        <p className="text-muted-foreground">{t('page.subtitle')}</p>
       </div>
 
       <Tabs defaultValue="today" className="space-y-4">
         <TabsList>
-          <TabsTrigger value="today">今日总结</TabsTrigger>
-          <TabsTrigger value="week">本周总结</TabsTrigger>
-          <TabsTrigger value="recent">最近7天</TabsTrigger>
+          <TabsTrigger value="today">{t('tabs.today')}</TabsTrigger>
+          <TabsTrigger value="week">{t('tabs.week')}</TabsTrigger>
+          <TabsTrigger value="recent">{t('tabs.recent')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="today" className="space-y-4">
@@ -69,8 +75,8 @@ export function DailySummaryPage() {
             <Card>
               <CardContent className="flex h-[300px] items-center justify-center">
                 <div className="text-center space-y-2">
-                  <p className="text-lg font-medium">今日暂无数据</p>
-                  <p className="text-sm text-muted-foreground">完成任务后，这里会显示您的今日统计</p>
+                  <p className="text-lg font-medium">{t('today.noData')}</p>
+                  <p className="text-sm text-muted-foreground">{t('today.noDataHint')}</p>
                 </div>
               </CardContent>
             </Card>
@@ -80,33 +86,46 @@ export function DailySummaryPage() {
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">已完成任务</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('today.completedTasks')}</CardTitle>
                     <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{todaySummary.completed_tasks_count}</div>
                     <p className="text-xs text-muted-foreground">
-                      共创建 {todaySummary.created_tasks_count} 个任务
+                      {t('today.createdTasks', { count: todaySummary.created_tasks_count })}
                     </p>
                   </CardContent>
                 </Card>
 
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">完成率</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('today.completedPomodoros')}</CardTitle>
+                    <Timer className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{pomodoroStats?.completedCount || 0}</div>
+                    <p className="text-xs text-muted-foreground">
+                      {t('today.focusDuration')} {pomodoroStats?.totalWorkDuration ? `${Math.floor(pomodoroStats.totalWorkDuration / 60)}${t('common.minutes')}` : `0${t('common.minutes')}`}
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">{t('today.completionRate')}</CardTitle>
                     <Target className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{todaySummary.completion_rate}%</div>
                     <p className="text-xs text-muted-foreground">
-                      {todaySummary.completion_rate >= 80 ? '表现优秀！' : '继续加油！'}
+                      {todaySummary.completion_rate >= 80 ? t('today.excellentPerformance') : t('today.keepGoing')}
                     </p>
                   </CardContent>
                 </Card>
 
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">工作时长</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('today.workDuration')}</CardTitle>
                     <Clock className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
@@ -116,24 +135,7 @@ export function DailySummaryPage() {
                         : '0h 0m'}
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      预计时长
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">平均时长</CardTitle>
-                    <TrendingUp className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">
-                      {todaySummary.completed_tasks_count > 0 && todaySummary.total_work_duration > 0
-                        ? Math.round(todaySummary.total_work_duration / todaySummary.completed_tasks_count)
-                        : 0}m
-                    </div>
-                    <p className="text-xs text-muted-foreground">
-                      每任务
+                      {t('today.estimatedDuration')}
                     </p>
                   </CardContent>
                 </Card>
@@ -142,12 +144,12 @@ export function DailySummaryPage() {
               {/* Completed Tasks List */}
               <Card>
                 <CardHeader>
-                  <CardTitle>已完成的任务</CardTitle>
-                  <CardDescription>今天完成的所有任务</CardDescription>
+                  <CardTitle>{t('today.completedTasksList')}</CardTitle>
+                  <CardDescription>{t('today.completedTasksDescription')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   {todaySummary.completed_tasks.length === 0 ? (
-                    <p className="text-sm text-muted-foreground text-center py-8">暂无完成的任务</p>
+                    <p className="text-sm text-muted-foreground text-center py-8">{t('today.noCompletedTasks')}</p>
                   ) : (
                     <div className="space-y-2">
                       {todaySummary.completed_tasks.map((task) => (
@@ -165,11 +167,11 @@ export function DailySummaryPage() {
                               {task.estimated_duration && (
                                 <span className="flex items-center gap-1">
                                   <Clock className="h-3 w-3" />
-                                  {task.estimated_duration}分钟
+                                  {task.estimated_duration}{t('common.minutes')}
                                 </span>
                               )}
                               <span>
-                                完成于 {new Date(task.completed_at!).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
+                                {t('today.completedAt')} {new Date(task.completed_at!).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
                               </span>
                             </div>
                           </div>
@@ -188,8 +190,8 @@ export function DailySummaryPage() {
             <Card>
               <CardContent className="flex h-[300px] items-center justify-center">
                 <div className="text-center space-y-2">
-                  <p className="text-lg font-medium">本周暂无数据</p>
-                  <p className="text-sm text-muted-foreground">完成任务后，这里会显示您的本周统计</p>
+                  <p className="text-lg font-medium">{t('week.noData')}</p>
+                  <p className="text-sm text-muted-foreground">{t('week.noDataHint')}</p>
                 </div>
               </CardContent>
             </Card>
@@ -199,33 +201,33 @@ export function DailySummaryPage() {
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">本周完成</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('week.completed')}</CardTitle>
                     <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{weekSummary.totalCompleted}</div>
                     <p className="text-xs text-muted-foreground">
-                      共创建 {weekSummary.totalCreated} 个任务
+                      {t('week.created', { count: weekSummary.totalCreated })}
                     </p>
                   </CardContent>
                 </Card>
 
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">周完成率</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('week.completionRate')}</CardTitle>
                     <Target className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{weekSummary.completionRate}%</div>
                     <p className="text-xs text-muted-foreground">
-                      {weekSummary.completionRate >= 70 ? '本周表现优秀！' : '继续努力！'}
+                      {weekSummary.completionRate >= 70 ? t('week.excellentWeek') : t('week.keepTrying')}
                     </p>
                   </CardContent>
                 </Card>
 
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">周工作时长</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('week.workDuration')}</CardTitle>
                     <Clock className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
@@ -235,14 +237,14 @@ export function DailySummaryPage() {
                         : '0h 0m'}
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      预计总时长
+                      {t('week.estimatedTotal')}
                     </p>
                   </CardContent>
                 </Card>
 
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">日均完成</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('week.dailyAverage')}</CardTitle>
                     <Calendar className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
@@ -252,7 +254,7 @@ export function DailySummaryPage() {
                         : 0}
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      个任务/天
+                      {t('week.tasksPerDay')}
                     </p>
                   </CardContent>
                 </Card>
@@ -261,8 +263,8 @@ export function DailySummaryPage() {
               {/* Daily Breakdown */}
               <Card>
                 <CardHeader>
-                  <CardTitle>每日明细</CardTitle>
-                  <CardDescription>本周各天的完成情况</CardDescription>
+                  <CardTitle>{t('week.dailyBreakdown')}</CardTitle>
+                  <CardDescription>{t('week.dailyBreakdownDescription')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
@@ -282,7 +284,7 @@ export function DailySummaryPage() {
                           <div className="flex items-center gap-4 text-xs text-muted-foreground">
                             <span className="flex items-center gap-1">
                               <CheckCircle2 className="h-3 w-3" />
-                              {summary.completed_tasks_count} 个任务
+                              {t('week.taskCount', { count: summary.completed_tasks_count })}
                             </span>
                             <span className="flex items-center gap-1">
                               <Clock className="h-3 w-3" />
@@ -294,7 +296,7 @@ export function DailySummaryPage() {
                         </div>
                         <div className="text-right">
                           <p className="text-2xl font-bold">{summary.completion_rate}%</p>
-                          <p className="text-xs text-muted-foreground">完成率</p>
+                          <p className="text-xs text-muted-foreground">{t('week.completionRateLabel')}</p>
                         </div>
                       </div>
                     ))}
@@ -310,16 +312,16 @@ export function DailySummaryPage() {
             <Card>
               <CardContent className="flex h-[300px] items-center justify-center">
                 <div className="text-center space-y-2">
-                  <p className="text-lg font-medium">暂无历史数据</p>
-                  <p className="text-sm text-muted-foreground">完成任务后，这里会显示您的历史统计</p>
+                  <p className="text-lg font-medium">{t('recent.noData')}</p>
+                  <p className="text-sm text-muted-foreground">{t('recent.noDataHint')}</p>
                 </div>
               </CardContent>
             </Card>
           ) : (
             <Card>
               <CardHeader>
-                <CardTitle>最近7天统计</CardTitle>
-                <CardDescription>您的每日完成情况一览</CardDescription>
+                <CardTitle>{t('recent.title')}</CardTitle>
+                <CardDescription>{t('recent.description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
@@ -339,7 +341,7 @@ export function DailySummaryPage() {
                         <div className="flex items-center gap-4 text-xs text-muted-foreground">
                           <span className="flex items-center gap-1">
                             <CheckCircle2 className="h-3 w-3" />
-                            {summary.completed_tasks_count} 个任务
+                            {t('recent.taskCount', { count: summary.completed_tasks_count })}
                           </span>
                           <span className="flex items-center gap-1">
                             <Clock className="h-3 w-3" />
@@ -351,7 +353,7 @@ export function DailySummaryPage() {
                       </div>
                       <div className="text-right">
                         <p className="text-2xl font-bold">{summary.completion_rate}%</p>
-                        <p className="text-xs text-muted-foreground">完成率</p>
+                        <p className="text-xs text-muted-foreground">{t('recent.completionRate')}</p>
                       </div>
                     </div>
                   ))}

@@ -1,0 +1,52 @@
+{
+  "app": {
+    "name": "Focus Flow",
+    "tagline": "专注于重要的事,一次只做一件事"
+  },
+  "actions": {
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "edit": "编辑",
+    "create": "创建",
+    "confirm": "确认",
+    "close": "关闭"
+  },
+  "navigation": {
+    "menu": "菜单",
+    "currentView": "当下任务",
+    "currentViewDescription": "专注于此刻最重要的事",
+    "tasks": "所有任务",
+    "tasksDescription": "查看和管理所有任务",
+    "dailySummary": "每日总结",
+    "dailySummaryDescription": "回顾每日完成情况",
+    "statistics": "数据统计",
+    "statisticsDescription": "查看长期进度趋势",
+    "settings": "设置"
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "noData": "暂无数据"
+  },
+  "user": {
+    "defaultName": "用户",
+    "profile": "个人资料",
+    "logout": "退出登录",
+    "logoutError": "退出登录失败"
+  },
+  "theme": {
+    "toggle": "切换主题",
+    "light": "浅色",
+    "dark": "深色",
+    "system": "跟随系统"
+  },
+  "header": {
+    "openMenu": "打开菜单"
+  },
+  "statistics": {
+    "noData": "暂无统计数据",
+    "noDataHint": "完成更多任务后，这里会展示您的趋势图表"
+  }
+}

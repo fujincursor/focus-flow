@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { useTranslation } from 'react-i18next'
 import {
   Dialog,
   DialogContent,
@@ -58,6 +59,7 @@ interface CreateTaskDialogProps {
 }
 
 export function CreateTaskDialog({ trigger }: CreateTaskDialogProps) {
+  const { t } = useTranslation('tasks')
   const [open, setOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
@@ -91,16 +93,14 @@ export function CreateTaskDialog({ trigger }: CreateTaskDialogProps) {
 
     if (newTask) {
       toast({
-        title: '任务创建成功',
-        description: `任务"${newTask.title}"已添加到您的任务列表`,
+        title: t('create.success'),
       })
       form.reset()
       setOpen(false)
     } else {
       toast({
         variant: 'destructive',
-        title: '创建任务失败',
-        description: '请稍后重试',
+        title: t('create.error'),
       })
     }
   }
@@ -111,15 +111,15 @@ export function CreateTaskDialog({ trigger }: CreateTaskDialogProps) {
         {trigger || (
           <Button>
             <Plus className="mr-2 h-4 w-4" />
-            创建任务
+            {t('create.button')}
           </Button>
         )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[525px]">
         <DialogHeader>
-          <DialogTitle>创建新任务</DialogTitle>
+          <DialogTitle>{t('create.dialogTitle')}</DialogTitle>
           <DialogDescription>
-            添加一个新任务到您的任务列表。设置标题、描述、时间敏感度和预估时长。
+            {t('create.titlePlaceholder')}
           </DialogDescription>
         </DialogHeader>
 
@@ -131,9 +131,9 @@ export function CreateTaskDialog({ trigger }: CreateTaskDialogProps) {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>任务标题 *</FormLabel>
+                  <FormLabel>{t('create.titleLabel')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="输入任务标题..." {...field} />
+                    <Input placeholder={t('create.titlePlaceholder')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -146,16 +146,16 @@ export function CreateTaskDialog({ trigger }: CreateTaskDialogProps) {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>任务描述</FormLabel>
+                  <FormLabel>{t('create.descriptionLabel')}</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="输入任务详细描述（可选）..."
+                      placeholder={t('create.descriptionPlaceholder')}
                       className="resize-none"
                       rows={3}
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>任务的详细说明或备注</FormDescription>
+                  <FormDescription>{t('create.descriptionPlaceholder')}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -167,20 +167,19 @@ export function CreateTaskDialog({ trigger }: CreateTaskDialogProps) {
               name="time_sensitivity"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>时间敏感度 *</FormLabel>
+                  <FormLabel>{t('create.timeSensitivityLabel')}</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="选择时间敏感度" />
+                        <SelectValue placeholder={t('create.timeSensitivityLabel')} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="today">今天必须完成</SelectItem>
-                      <SelectItem value="this_week">本周内完成</SelectItem>
-                      <SelectItem value="anytime">任何时候</SelectItem>
+                      <SelectItem value="today">{t('timeSensitivity.today')}</SelectItem>
+                      <SelectItem value="this_week">{t('timeSensitivity.this_week')}</SelectItem>
+                      <SelectItem value="anytime">{t('timeSensitivity.anytime')}</SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormDescription>任务的紧急程度</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -192,11 +191,11 @@ export function CreateTaskDialog({ trigger }: CreateTaskDialogProps) {
               name="estimated_duration"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>预估时长（分钟）</FormLabel>
+                  <FormLabel>{t('create.durationLabel')}</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
-                      placeholder="例如：60"
+                      placeholder={t('create.durationPlaceholder')}
                       {...field}
                       value={field.value ?? ''}
                       onChange={e => {
@@ -205,7 +204,7 @@ export function CreateTaskDialog({ trigger }: CreateTaskDialogProps) {
                       }}
                     />
                   </FormControl>
-                  <FormDescription>完成此任务预计需要的时间（分钟）</FormDescription>
+                  <FormDescription>{t('create.durationUnit')}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -218,10 +217,10 @@ export function CreateTaskDialog({ trigger }: CreateTaskDialogProps) {
                 onClick={() => setOpen(false)}
                 disabled={isSubmitting}
               >
-                取消
+                {t('create.cancelButton')}
               </Button>
               <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? '创建中...' : '创建任务'}
+                {isSubmitting ? t('create.submitButton') : t('create.submitButton')}
               </Button>
             </DialogFooter>
           </form>

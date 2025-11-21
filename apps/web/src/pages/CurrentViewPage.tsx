@@ -1,8 +1,10 @@
 import { useEffect, useState, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useTaskStore } from '@/stores/taskStore'
 import { useSettingsStore } from '@/stores/settingsStore'
 import { getCurrentTasks } from '@/lib/currentTaskFilter'
 import { FocusTaskCard } from '@/components/current-view'
+import { PomodoroTimer, WorkCompleteDialog, RestCompleteDialog } from '@/components/pomodoro'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Loader2, CheckCircle2, Plus, WifiOff } from 'lucide-react'
@@ -11,6 +13,7 @@ import { useTaskRealtime, useOnlineStatus } from '@/hooks'
 import type { Task } from '@/types/task'
 
 export function CurrentViewPage() {
+  const { t } = useTranslation('currentView')
   const {
     tasks,
     isLoading,
@@ -19,10 +22,12 @@ export function CurrentViewPage() {
     updateTask,
   } = useTaskStore()
 
-  const { currentView: settings, loadSettings } = useSettingsStore()
+  const { currentView: settings, pomodoro: pomodoroSettings, loadSettings } = useSettingsStore()
 
   const [currentTaskIndex, setCurrentTaskIndex] = useState(0)
   const [showCelebration, setShowCelebration] = useState(false)
+  const [showWorkCompleteDialog, setShowWorkCompleteDialog] = useState(false)
+  const [showRestCompleteDialog, setShowRestCompleteDialog] = useState(false)
 
   // Enable realtime synchronization
   useTaskRealtime()
@@ -122,6 +127,35 @@ export function CurrentViewPage() {
     console.log('Edit task:', currentTask?.id)
   }, [currentTask])
 
+  // Pomodoro handlers
+  const handlePomodoroWorkComplete = useCallback(() => {
+    setShowWorkCompleteDialog(true)
+  }, [])
+
+  const handlePomodoroRestComplete = useCallback(() => {
+    setShowRestCompleteDialog(true)
+  }, [])
+
+  // Dialog action handlers
+  const handleStartRest = useCallback(() => {
+    setShowWorkCompleteDialog(false)
+    // PomodoroTimer will auto-start rest if autoStartRest is enabled
+  }, [])
+
+  const handleSkipRest = useCallback(() => {
+    setShowWorkCompleteDialog(false)
+    // Reset timer to idle
+  }, [])
+
+  const handleStartWork = useCallback(() => {
+    setShowRestCompleteDialog(false)
+    // Can trigger a new pomodoro cycle here if needed
+  }, [])
+
+  const handleFinishPomodoro = useCallback(() => {
+    setShowRestCompleteDialog(false)
+  }, [])
+
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -158,7 +192,7 @@ export function CurrentViewPage() {
   if (isLoading) {
     return (
       <div className="flex h-[calc(100vh-200px)] items-center justify-center">
-        <Loader2 className="h-12 w-12 animate-spin text-primary" role="status" aria-label="加载任务中" />
+        <Loader2 className="h-12 w-12 animate-spin text-primary" role="status" aria-label={t('loading')} />
       </div>
     )
   }
@@ -169,27 +203,27 @@ export function CurrentViewPage() {
       <div className="flex h-[calc(100vh-200px)] flex-col items-center justify-center space-y-6 text-center">
         <CheckCircle2 className="h-24 w-24 text-green-500 animate-in zoom-in-50" />
         <div className="space-y-2">
-          <h2 className="text-3xl font-bold tracking-tight">太棒了！</h2>
+          <h2 className="text-3xl font-bold tracking-tight">{t('noTask.title')}</h2>
           <p className="text-xl text-muted-foreground max-w-md">
             {tasks.length === 0
-              ? '还没有任务。创建您的第一个任务开始专注吧！'
-              : '所有当前任务已处理完毕。享受您的空闲时光！'}
+              ? t('noTask.noTasksMessage')
+              : t('noTask.allDoneMessage')}
           </p>
         </div>
         <CreateTaskDialog
           trigger={
             <Button size="lg" className="mt-4">
               <Plus className="mr-2 h-5 w-5" />
-              创建新任务
+              {t('noTask.createButton')}
             </Button>
           }
         />
         <div className="mt-8 text-sm text-muted-foreground">
-          <p>提示：使用键盘快捷键提高效率</p>
+          <p>{t('shortcuts.hint')}</p>
           <ul className="mt-2 space-y-1">
-            <li><kbd className="px-2 py-1 bg-muted rounded">Space</kbd> 完成任务</li>
-            <li><kbd className="px-2 py-1 bg-muted rounded">→</kbd> or <kbd className="px-2 py-1 bg-muted rounded">N</kbd> 下一个</li>
-            <li><kbd className="px-2 py-1 bg-muted rounded">←</kbd> or <kbd className="px-2 py-1 bg-muted rounded">P</kbd> 上一个</li>
+            <li><kbd className="px-2 py-1 bg-muted rounded">Space</kbd> {t('shortcuts.complete')}</li>
+            <li><kbd className="px-2 py-1 bg-muted rounded">→</kbd> or <kbd className="px-2 py-1 bg-muted rounded">N</kbd> {t('shortcuts.next')}</li>
+            <li><kbd className="px-2 py-1 bg-muted rounded">←</kbd> or <kbd className="px-2 py-1 bg-muted rounded">P</kbd> {t('shortcuts.previous')}</li>
           </ul>
         </div>
       </div>
@@ -201,15 +235,15 @@ export function CurrentViewPage() {
     <div className="space-y-8">
       {/* Header */}
       <div className="text-center space-y-2">
-        <h1 className="text-4xl font-bold tracking-tight">当下专注</h1>
+        <h1 className="text-4xl font-bold tracking-tight">{t('page.title')}</h1>
         <p className="text-lg text-muted-foreground">
-          专注于此刻，一次只做一件事
+          {t('page.subtitle')}
         </p>
         {/* Offline indicator */}
         {!isOnline && (
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-destructive/10 text-destructive text-sm font-medium animate-in fade-in">
             <WifiOff className="h-4 w-4" />
-            离线模式
+            {t('status.offline')}
           </div>
         )}
       </div>
@@ -219,7 +253,7 @@ export function CurrentViewPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 animate-in fade-in">
           <div className="text-center space-y-4 animate-in zoom-in-50">
             <CheckCircle2 className="h-32 w-32 text-green-500 mx-auto" />
-            <p className="text-3xl font-bold text-white">太棒了！</p>
+            <p className="text-3xl font-bold text-white">{t('celebration.message')}</p>
           </div>
         </div>
       )}
@@ -228,7 +262,7 @@ export function CurrentViewPage() {
       <div className="max-w-2xl mx-auto space-y-3">
         <div className="flex items-center justify-between text-sm">
           <span className="text-muted-foreground">
-            任务进度
+            {t('progress.label')}
           </span>
           <span className="font-medium">
             {currentTaskIndex + 1} / {currentTasks.length}
@@ -240,8 +274,8 @@ export function CurrentViewPage() {
         />
         <div className="text-xs text-muted-foreground text-center">
           {currentTasks.length - currentTaskIndex - 1 === 0
-            ? '这是最后一个任务了！'
-            : `还有 ${currentTasks.length - currentTaskIndex - 1} 个任务待处理`}
+            ? t('progress.lastTask')
+            : t('progress.remaining', { count: currentTasks.length - currentTaskIndex - 1 })}
         </div>
       </div>
 
@@ -256,6 +290,39 @@ export function CurrentViewPage() {
         />
       </div>
 
+      {/* Pomodoro Timer - conditionally rendered based on settings */}
+      {pomodoroSettings.enablePomodoro && (
+        <div className="flex justify-center">
+          <div className="w-full max-w-md">
+            <PomodoroTimer
+              workDuration={pomodoroSettings.pomodoroWorkDuration}
+              restDuration={pomodoroSettings.pomodoroRestDuration}
+              taskId={currentTask?.id}
+              onWorkComplete={handlePomodoroWorkComplete}
+              onRestComplete={handlePomodoroRestComplete}
+              autoStartRest={pomodoroSettings.autoStartRest}
+              soundEnabled={pomodoroSettings.pomodoroSoundEnabled}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Work Complete Dialog */}
+      <WorkCompleteDialog
+        open={showWorkCompleteDialog}
+        onOpenChange={setShowWorkCompleteDialog}
+        onStartRest={handleStartRest}
+        onSkipRest={handleSkipRest}
+      />
+
+      {/* Rest Complete Dialog */}
+      <RestCompleteDialog
+        open={showRestCompleteDialog}
+        onOpenChange={setShowRestCompleteDialog}
+        onStartWork={handleStartWork}
+        onFinish={handleFinishPomodoro}
+      />
+
       {/* Navigation buttons */}
       <div className="flex justify-center gap-4">
         <Button
@@ -263,20 +330,20 @@ export function CurrentViewPage() {
           onClick={handlePrevious}
           disabled={currentTaskIndex === 0}
         >
-          ← 上一个
+          ← {t('navigation.previous')}
         </Button>
         <Button
           variant="outline"
           onClick={handleNext}
           disabled={!hasMoreTasks}
         >
-          下一个 →
+          {t('navigation.next')} →
         </Button>
       </div>
 
       {/* Keyboard shortcuts hint */}
       <div className="text-center text-sm text-muted-foreground mt-8">
-        <p>快捷键：<kbd className="px-2 py-1 bg-muted rounded text-xs">Space</kbd> 完成 | <kbd className="px-2 py-1 bg-muted rounded text-xs">→/N</kbd> 下一个 | <kbd className="px-2 py-1 bg-muted rounded text-xs">←/P</kbd> 上一个</p>
+        <p>{t('shortcuts.summary')}</p>
       </div>
     </div>
   )

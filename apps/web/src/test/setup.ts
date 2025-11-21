@@ -1,4 +1,4 @@
-import { expect, afterEach } from 'vitest'
+import { expect, afterEach, vi } from 'vitest'
 import { cleanup } from '@testing-library/react'
 import * as matchers from '@testing-library/jest-dom/matchers'
 
@@ -9,3 +9,15 @@ expect.extend(matchers)
 afterEach(() => {
   cleanup()
 })
+
+// Mock react-i18next
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key,
+    i18n: {
+      language: 'en',
+      changeLanguage: vi.fn(),
+    },
+  }),
+  I18nextProvider: ({ children }: { children: React.ReactNode }) => children,
+}))

@@ -1,0 +1,47 @@
+{
+  "title": "数据统计",
+  "description": "查看您的番茄钟专注统计和趋势",
+  "timeRange": {
+    "week": "最近 7 天",
+    "month": "最近 30 天",
+    "custom": "自定义范围"
+  },
+  "customRange": {
+    "title": "选择日期范围",
+    "description": "选择起始和结束日期以查看统计数据",
+    "startDate": "开始日期",
+    "endDate": "结束日期"
+  },
+  "metrics": {
+    "totalCompleted": "总完成数",
+    "totalDuration": "总专注时长",
+    "averagePerDay": "日均完成数",
+    "completionRate": "完成率",
+    "durationFormat": "{{hours}} 小时 {{minutes}} 分钟",
+    "durationFormatMinutes": "{{minutes}} 分钟"
+  },
+  "charts": {
+    "completionTrend": "完成趋势",
+    "completionTrendDesc": "每日完成的番茄钟数量变化",
+    "focusDuration": "专注时长",
+    "focusDurationDesc": "每日专注时长（分钟）",
+    "completionRate": "完成率",
+    "completionRateDesc": "已完成 vs 已中断的番茄钟比例"
+  },
+  "empty": {
+    "title": "请选择时间范围",
+    "description": "在上方选择一个时间范围以查看统计数据",
+    "noDataTitle": "暂无数据",
+    "noDataHint": "开始一些番茄钟会话以查看统计数据"
+  },
+  "errors": {
+    "title": "加载统计数据失败",
+    "loadFailed": "无法加载统计数据，请重试",
+    "selectDateRange": "请选择开始日期和结束日期",
+    "invalidDateRange": "开始日期必须早于结束日期"
+  },
+  "actions": {
+    "retry": "重试",
+    "loadData": "加载数据"
+  }
+}

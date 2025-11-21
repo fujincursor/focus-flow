@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,27 +19,28 @@ interface DeleteConfirmDialogProps {
 }
 
 export function DeleteConfirmDialog({
-  task,
   open,
   onOpenChange,
   onConfirm,
 }: DeleteConfirmDialogProps) {
+  const { t } = useTranslation('tasks')
+
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>确认删除任务</AlertDialogTitle>
+          <AlertDialogTitle>{t('delete.dialogTitle')}</AlertDialogTitle>
           <AlertDialogDescription>
-            你确定要删除任务 "{task?.title}" 吗？此操作无法撤销。
+            {t('delete.dialogDescription')}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>取消</AlertDialogCancel>
+          <AlertDialogCancel>{t('delete.cancelButton')}</AlertDialogCancel>
           <AlertDialogAction
             onClick={onConfirm}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
-            删除
+            {t('delete.confirmButton')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -21,6 +22,7 @@ import { signUpSchema, type SignUpFormData } from '@/lib/validations/auth'
  * Allows new users to create an account with email and password
  */
 export function SignupPage() {
+  const { t } = useTranslation('auth')
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
   const { toast } = useToast()
@@ -47,16 +49,11 @@ export function SignupPage() {
     if (error) {
       toast({
         variant: 'destructive',
-        title: '注册失败',
+        title: t('signup.error'),
         description: error.message,
       })
       return
     }
-
-    toast({
-      title: '注册成功！',
-      description: '请检查您的邮箱以验证账户',
-    })
 
     navigate('/login')
   }
@@ -65,9 +62,9 @@ export function SignupPage() {
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
-          <h1 className="text-3xl font-bold tracking-tight">创建账户</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t('signup.title')}</h1>
           <p className="mt-2 text-sm text-gray-600">
-            开始使用 Focus Flow 管理您的任务
+            {t('signup.subtitle')}
           </p>
         </div>
 
@@ -78,11 +75,11 @@ export function SignupPage() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>邮箱</FormLabel>
+                  <FormLabel>{t('signup.emailLabel')}</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
-                      placeholder="your@email.com"
+                      placeholder={t('signup.emailPlaceholder')}
                       autoComplete="email"
                       {...field}
                     />
@@ -97,11 +94,11 @@ export function SignupPage() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>密码</FormLabel>
+                  <FormLabel>{t('signup.passwordLabel')}</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder="••••••••"
+                      placeholder={t('signup.passwordPlaceholder')}
                       autoComplete="new-password"
                       {...field}
                     />
@@ -116,11 +113,11 @@ export function SignupPage() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>确认密码</FormLabel>
+                  <FormLabel>{t('signup.confirmPasswordLabel')}</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder="••••••••"
+                      placeholder={t('signup.confirmPasswordPlaceholder')}
                       autoComplete="new-password"
                       {...field}
                     />
@@ -131,18 +128,18 @@ export function SignupPage() {
             />
 
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? '注册中...' : '注册'}
+              {isLoading ? t('signup.signingUp') : t('signup.submitButton')}
             </Button>
           </form>
         </Form>
 
         <p className="text-center text-sm text-gray-600">
-          已有账户？{' '}
+          {t('signup.hasAccount')}{' '}
           <Link
             to="/login"
             className="font-medium text-blue-600 hover:text-blue-500"
           >
-            去登录
+            {t('signup.loginLink')}
           </Link>
         </p>
       </div>

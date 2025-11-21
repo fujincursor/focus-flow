@@ -1,0 +1,103 @@
+{
+  "page": {
+    "title": "Daily Summary",
+    "subtitle": "Review your daily progress"
+  },
+  "tabs": {
+    "today": "Today's Summary",
+    "week": "This Week",
+    "recent": "Last 7 Days"
+  },
+  "common": {
+    "minutes": " minutes"
+  },
+  "today": {
+    "noData": "No data for today",
+    "noDataHint": "After completing tasks, your today's statistics will be displayed here",
+    "completedTasks": "Completed Tasks",
+    "createdTasks": "Created {{count}} tasks",
+    "completedPomodoros": "Completed Pomodoros",
+    "focusDuration": "Focus time",
+    "completionRate": "Completion Rate",
+    "excellentPerformance": "Excellent performance!",
+    "keepGoing": "Keep going!",
+    "workDuration": "Work Duration",
+    "estimatedDuration": "Estimated duration",
+    "completedTasksList": "Completed Tasks",
+    "completedTasksDescription": "All tasks completed today",
+    "noCompletedTasks": "No completed tasks yet",
+    "completedAt": "Completed at"
+  },
+  "week": {
+    "noData": "No data for this week",
+    "noDataHint": "After completing tasks, your weekly statistics will be displayed here",
+    "completed": "This Week",
+    "created": "Created {{count}} tasks",
+    "completionRate": "Weekly Completion Rate",
+    "excellentWeek": "Excellent week!",
+    "keepTrying": "Keep trying!",
+    "workDuration": "Weekly Work Duration",
+    "estimatedTotal": "Estimated total",
+    "dailyAverage": "Daily Average",
+    "tasksPerDay": "tasks/day",
+    "dailyBreakdown": "Daily Breakdown",
+    "dailyBreakdownDescription": "Daily completion status this week",
+    "taskCount": "{{count}} tasks",
+    "completionRateLabel": "Completion rate"
+  },
+  "recent": {
+    "noData": "No historical data",
+    "noDataHint": "After completing tasks, your historical statistics will be displayed here",
+    "title": "Last 7 Days Statistics",
+    "description": "Your daily completion overview",
+    "taskCount": "{{count}} tasks",
+    "completionRate": "Completion rate"
+  },
+  "stats": {
+    "completedTasks": "Completed Tasks",
+    "totalPomodoros": "Total Pomodoros",
+    "focusTime": "Focus Time",
+    "completionRate": "Completion Rate"
+  },
+  "sections": {
+    "overview": "Today's Overview",
+    "tasks": "Tasks Completed Today",
+    "pomodoros": "Pomodoro Sessions",
+    "insights": "Insights"
+  },
+  "tasks": {
+    "empty": "No tasks completed today",
+    "completedAt": "Completed at",
+    "duration": "Duration",
+    "pomodoros": "pomodoros"
+  },
+  "pomodoros": {
+    "empty": "No pomodoro sessions today",
+    "session": "Session",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "duration": "Duration",
+    "taskName": "Task"
+  },
+  "insights": {
+    "productiveHours": "Most Productive Hours",
+    "averageSessionLength": "Average Session Length",
+    "focusStreak": "Focus Streak",
+    "days": "days",
+    "minutes": "minutes",
+    "morning": "Morning (6am-12pm)",
+    "afternoon": "Afternoon (12pm-6pm)",
+    "evening": "Evening (6pm-12am)",
+    "night": "Night (12am-6am)"
+  },
+  "navigation": {
+    "previousDay": "Previous Day",
+    "nextDay": "Next Day",
+    "today": "Today"
+  },
+  "export": {
+    "button": "Export Summary",
+    "pdf": "Export as PDF",
+    "csv": "Export as CSV"
+  }
+}

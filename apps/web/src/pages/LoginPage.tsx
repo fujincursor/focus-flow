@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -22,6 +23,7 @@ import { signInSchema, type SignInFormData } from '@/lib/validations/auth'
  * Allows users to sign in with email and password
  */
 export function LoginPage() {
+  const { t } = useTranslation('auth')
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
   const { toast } = useToast()
@@ -48,7 +50,7 @@ export function LoginPage() {
     if (error) {
       toast({
         variant: 'destructive',
-        title: '登录失败',
+        title: t('login.error'),
         description: error.message,
       })
       return
@@ -56,10 +58,6 @@ export function LoginPage() {
 
     if (user) {
       setUser(user)
-      toast({
-        title: '登录成功！',
-        description: '欢迎回来',
-      })
       navigate('/')
     }
   }
@@ -68,9 +66,9 @@ export function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
-          <h1 className="text-3xl font-bold tracking-tight">登录</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t('login.title')}</h1>
           <p className="mt-2 text-sm text-gray-600">
-            登录您的 Focus Flow 账户
+            {t('login.subtitle')}
           </p>
         </div>
 
@@ -81,11 +79,11 @@ export function LoginPage() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>邮箱</FormLabel>
+                  <FormLabel>{t('login.emailLabel')}</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
-                      placeholder="your@email.com"
+                      placeholder={t('login.emailPlaceholder')}
                       autoComplete="email"
                       {...field}
                     />
@@ -100,11 +98,11 @@ export function LoginPage() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>密码</FormLabel>
+                  <FormLabel>{t('login.passwordLabel')}</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder="••••••••"
+                      placeholder={t('login.passwordPlaceholder')}
                       autoComplete="current-password"
                       {...field}
                     />
@@ -115,18 +113,18 @@ export function LoginPage() {
             />
 
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? '登录中...' : '登录'}
+              {isLoading ? t('login.signingIn') : t('login.submitButton')}
             </Button>
           </form>
         </Form>
 
         <p className="text-center text-sm text-gray-600">
-          没有账户？{' '}
+          {t('login.noAccount')}{' '}
           <Link
             to="/signup"
             className="font-medium text-blue-600 hover:text-blue-500"
           >
-            去注册
+            {t('login.signupLink')}
           </Link>
         </p>
       </div>

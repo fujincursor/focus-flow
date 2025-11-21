@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import { formatDuration } from '@/lib/utils'
@@ -11,12 +12,6 @@ interface TaskListProps {
   onEdit?: (task: Task) => void
 }
 
-const TIME_SENSITIVITY_LABELS = {
-  today: '今天',
-  this_week: '本周',
-  anytime: '任何时候',
-} as const
-
 const TIME_SENSITIVITY_COLORS = {
   today: 'text-red-600 bg-red-50',
   this_week: 'text-orange-600 bg-orange-50',
@@ -24,13 +19,15 @@ const TIME_SENSITIVITY_COLORS = {
 } as const
 
 export function TaskList({ tasks, onToggleComplete, onDelete, onEdit }: TaskListProps) {
+  const { t } = useTranslation('tasks')
+
   if (tasks.length === 0) {
     return (
       <div className="flex h-[400px] items-center justify-center rounded-lg border border-dashed">
         <div className="text-center">
-          <h3 className="text-lg font-medium">暂无任务</h3>
+          <h3 className="text-lg font-medium">{t('empty.title')}</h3>
           <p className="mt-2 text-sm text-muted-foreground">
-            点击"创建任务"开始添加您的第一个任务
+            {t('empty.description')}
           </p>
         </div>
       </div>
@@ -75,7 +72,7 @@ export function TaskList({ tasks, onToggleComplete, onDelete, onEdit }: TaskList
                     onClick={() => onEdit(task)}
                   >
                     <Pencil className="h-4 w-4" />
-                    <span className="sr-only">编辑任务</span>
+                    <span className="sr-only">{t('actions.edit')}</span>
                   </Button>
                 )}
 
@@ -87,7 +84,7 @@ export function TaskList({ tasks, onToggleComplete, onDelete, onEdit }: TaskList
                   onClick={() => onDelete(task.id)}
                 >
                   <Trash2 className="h-4 w-4 text-destructive" />
-                  <span className="sr-only">删除任务</span>
+                  <span className="sr-only">{t('actions.delete')}</span>
                 </Button>
               </div>
             </div>
@@ -111,7 +108,7 @@ export function TaskList({ tasks, onToggleComplete, onDelete, onEdit }: TaskList
                   TIME_SENSITIVITY_COLORS[task.time_sensitivity]
                 }`}
               >
-                {TIME_SENSITIVITY_LABELS[task.time_sensitivity]}
+                {t(`timeSensitivity.${task.time_sensitivity}`)}
               </span>
 
               {/* Estimated duration */}
@@ -125,7 +122,7 @@ export function TaskList({ tasks, onToggleComplete, onDelete, onEdit }: TaskList
               {/* Completed timestamp */}
               {task.is_completed && task.completed_at && (
                 <span className="text-muted-foreground">
-                  完成于 {new Date(task.completed_at).toLocaleString('zh-CN')}
+                  {t('completedAt')} {new Date(task.completed_at).toLocaleString()}
                 </span>
               )}
             </div>

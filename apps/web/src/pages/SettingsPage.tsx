@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSettingsStore } from '@/stores/settingsStore'
 import {
   Card,
@@ -21,8 +22,13 @@ import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/use-toast'
 
 export function SettingsPage() {
-  const { currentView, updateCurrentViewSettings, resetToDefaults, loadSettings } =
-    useSettingsStore()
+  const { t, i18n } = useTranslation('settings')
+  const {
+    pomodoro,
+    updatePomodoroSettings,
+    resetToDefaults,
+    loadSettings,
+  } = useSettingsStore()
   const { toast } = useToast()
 
   // Load settings on mount
@@ -33,132 +39,151 @@ export function SettingsPage() {
   const handleResetDefaults = () => {
     resetToDefaults()
     toast({
-      title: '设置已重置',
-      description: '所有设置已恢复为默认值',
+      title: t('messages.resetSuccess'),
       duration: 3000,
     })
+  }
+
+  const handleLanguageChange = (language: string) => {
+    i18n.changeLanguage(language)
   }
 
   return (
     <div className="container max-w-2xl mx-auto p-6 space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">设置</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t('page.title')}</h1>
         <p className="text-muted-foreground mt-2">
-          自定义您的 Focus Flow 体验
+          {t('page.subtitle')}
         </p>
       </div>
 
-      {/* Current View Settings */}
+      {/* Appearance Settings */}
       <Card>
         <CardHeader>
-          <CardTitle>当下视图设置</CardTitle>
+          <CardTitle>{t('sections.appearance')}</CardTitle>
           <CardDescription>
-            自定义"当下能做什么"视图的行为和展示
+            {t('appearance.languageDescription')}
           </CardDescription>
         </CardHeader>
 
         <CardContent className="space-y-6">
-          {/* Maximum Anytime Tasks */}
+          {/* Language Selection */}
           <div className="space-y-2">
-            <Label htmlFor="max-anytime-tasks">
-              随时可做任务显示数量
-            </Label>
+            <Label htmlFor="language">{t('appearance.language')}</Label>
             <Select
-              value={currentView.maxAnytimeTasks.toString()}
-              onValueChange={(value) =>
-                updateCurrentViewSettings({
-                  maxAnytimeTasks: parseInt(value, 10),
-                })
-              }
+              value={i18n.language}
+              onValueChange={handleLanguageChange}
             >
-              <SelectTrigger id="max-anytime-tasks">
+              <SelectTrigger id="language">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {[1, 2, 3, 5, 10].map((num) => (
+                <SelectItem value="en">English</SelectItem>
+                <SelectItem value="zh">中文</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Pomodoro Settings */}
+      <Card>
+        <CardHeader>
+          <CardTitle>{t('sections.pomodoro')}</CardTitle>
+          <CardDescription>
+            {t('pomodoro.workDurationDescription')}
+          </CardDescription>
+        </CardHeader>
+
+        <CardContent className="space-y-6">
+          {/* Work Duration */}
+          <div className="space-y-2">
+            <Label htmlFor="work-duration">{t('pomodoro.workDuration')}</Label>
+            <Select
+              value={pomodoro.pomodoroWorkDuration.toString()}
+              onValueChange={(value) =>
+                updatePomodoroSettings({
+                  pomodoroWorkDuration: parseInt(value, 10),
+                })
+              }
+            >
+              <SelectTrigger id="work-duration">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {[15, 20, 25, 30, 45, 60].map((num) => (
                   <SelectItem key={num} value={num.toString()}>
-                    {num} 个任务
+                    {num} {t('pomodoro.minutes')}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
             <p className="text-sm text-muted-foreground">
-              控制在"随时可做"类别中最多显示多少个任务
+              {t('pomodoro.workDurationDescription')}
             </p>
           </div>
 
-          {/* Auto Switch After Complete */}
+          {/* Rest Duration */}
+          <div className="space-y-2">
+            <Label htmlFor="rest-duration">{t('pomodoro.shortBreak')}</Label>
+            <Select
+              value={pomodoro.pomodoroRestDuration.toString()}
+              onValueChange={(value) =>
+                updatePomodoroSettings({
+                  pomodoroRestDuration: parseInt(value, 10),
+                })
+              }
+            >
+              <SelectTrigger id="rest-duration">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {[3, 5, 10, 15, 20].map((num) => (
+                  <SelectItem key={num} value={num.toString()}>
+                    {num} {t('pomodoro.minutes')}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <p className="text-sm text-muted-foreground">
+              {t('pomodoro.shortBreakDescription')}
+            </p>
+          </div>
+
+          {/* Sound Enabled */}
           <div className="flex items-center justify-between space-x-4">
             <div className="flex-1 space-y-1">
-              <Label htmlFor="auto-switch">完成后自动切换</Label>
+              <Label htmlFor="pomodoro-sound">{t('notifications.sound')}</Label>
               <p className="text-sm text-muted-foreground">
-                完成任务后自动显示下一个任务
+                {t('notifications.soundDescription')}
               </p>
             </div>
             <Switch
-              id="auto-switch"
-              checked={currentView.autoSwitchAfterComplete}
+              id="pomodoro-sound"
+              checked={pomodoro.pomodoroSoundEnabled}
               onCheckedChange={(checked) =>
-                updateCurrentViewSettings({
-                  autoSwitchAfterComplete: checked,
+                updatePomodoroSettings({
+                  pomodoroSoundEnabled: checked,
                 })
               }
             />
           </div>
 
-          {/* Celebration Animation */}
+          {/* Auto Start Rest */}
           <div className="flex items-center justify-between space-x-4">
             <div className="flex-1 space-y-1">
-              <Label htmlFor="celebration">庆祝动画</Label>
+              <Label htmlFor="auto-start-rest">{t('pomodoro.autoStartBreaks')}</Label>
               <p className="text-sm text-muted-foreground">
-                完成任务时显示庆祝动画
+                {t('pomodoro.autoStartBreaksDescription')}
               </p>
             </div>
             <Switch
-              id="celebration"
-              checked={currentView.celebrationAnimation}
+              id="auto-start-rest"
+              checked={pomodoro.autoStartRest}
               onCheckedChange={(checked) =>
-                updateCurrentViewSettings({
-                  celebrationAnimation: checked,
-                })
-              }
-            />
-          </div>
-
-          {/* Sound Effects */}
-          <div className="flex items-center justify-between space-x-4">
-            <div className="flex-1 space-y-1">
-              <Label htmlFor="sound">音效</Label>
-              <p className="text-sm text-muted-foreground">
-                完成任务时播放提示音
-              </p>
-            </div>
-            <Switch
-              id="sound"
-              checked={currentView.soundEffects}
-              onCheckedChange={(checked) =>
-                updateCurrentViewSettings({
-                  soundEffects: checked,
-                })
-              }
-            />
-          </div>
-
-          {/* Prioritize Short Tasks */}
-          <div className="flex items-center justify-between space-x-4">
-            <div className="flex-1 space-y-1">
-              <Label htmlFor="short-tasks">晚上优先短任务</Label>
-              <p className="text-sm text-muted-foreground">
-                18:00 后优先推荐 30 分钟以内的任务
-              </p>
-            </div>
-            <Switch
-              id="short-tasks"
-              checked={currentView.prioritizeShortTasks}
-              onCheckedChange={(checked) =>
-                updateCurrentViewSettings({
-                  prioritizeShortTasks: checked,
+                updatePomodoroSettings({
+                  autoStartRest: checked,
                 })
               }
             />
@@ -167,31 +192,12 @@ export function SettingsPage() {
 
         <CardFooter className="flex justify-between">
           <Button variant="outline" onClick={handleResetDefaults}>
-            恢复默认设置
+            {t('actions.reset')}
           </Button>
           <p className="text-sm text-muted-foreground">
-            设置会自动保存
+            {t('messages.saveSuccess')}
           </p>
         </CardFooter>
-      </Card>
-
-      {/* Future Settings Sections */}
-      <Card className="opacity-50">
-        <CardHeader>
-          <CardTitle>通知设置</CardTitle>
-          <CardDescription>
-            即将推出 - 自定义提醒和通知
-          </CardDescription>
-        </CardHeader>
-      </Card>
-
-      <Card className="opacity-50">
-        <CardHeader>
-          <CardTitle>主题设置</CardTitle>
-          <CardDescription>
-            即将推出 - 自定义颜色和外观
-          </CardDescription>
-        </CardHeader>
       </Card>
     </div>
   )

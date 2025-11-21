@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { useTranslation } from 'react-i18next'
 import {
   Dialog,
   DialogContent,
@@ -58,6 +59,7 @@ interface EditTaskDialogProps {
 }
 
 export function EditTaskDialog({ task, open, onOpenChange }: EditTaskDialogProps) {
+  const { t } = useTranslation('tasks')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
   const updateTask = useTaskStore(state => state.updateTask)
@@ -100,15 +102,13 @@ export function EditTaskDialog({ task, open, onOpenChange }: EditTaskDialogProps
 
     if (updatedTask) {
       toast({
-        title: '任务更新成功',
-        description: `任务"${updatedTask.title}"已更新`,
+        title: t('edit.success'),
       })
       onOpenChange(false)
     } else {
       toast({
         variant: 'destructive',
-        title: '更新任务失败',
-        description: '请稍后重试',
+        title: t('edit.error'),
       })
     }
   }
@@ -117,9 +117,9 @@ export function EditTaskDialog({ task, open, onOpenChange }: EditTaskDialogProps
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[525px]">
         <DialogHeader>
-          <DialogTitle>编辑任务</DialogTitle>
+          <DialogTitle>{t('edit.dialogTitle')}</DialogTitle>
           <DialogDescription>
-            修改任务信息。更新标题、描述、时间敏感度和预估时长。
+            {t('create.titlePlaceholder')}
           </DialogDescription>
         </DialogHeader>
 
@@ -131,9 +131,9 @@ export function EditTaskDialog({ task, open, onOpenChange }: EditTaskDialogProps
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>任务标题 *</FormLabel>
+                  <FormLabel>{t('create.titleLabel')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="输入任务标题..." {...field} />
+                    <Input placeholder={t('create.titlePlaceholder')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -146,16 +146,16 @@ export function EditTaskDialog({ task, open, onOpenChange }: EditTaskDialogProps
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>任务描述</FormLabel>
+                  <FormLabel>{t('create.descriptionLabel')}</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="输入任务详细描述（可选）..."
+                      placeholder={t('create.descriptionPlaceholder')}
                       className="resize-none"
                       rows={3}
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>任务的详细说明或备注</FormDescription>
+                  <FormDescription>{t('create.descriptionPlaceholder')}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -167,20 +167,19 @@ export function EditTaskDialog({ task, open, onOpenChange }: EditTaskDialogProps
               name="time_sensitivity"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>时间敏感度 *</FormLabel>
+                  <FormLabel>{t('create.timeSensitivityLabel')}</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="选择时间敏感度" />
+                        <SelectValue placeholder={t('create.timeSensitivityLabel')} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="today">今天必须完成</SelectItem>
-                      <SelectItem value="this_week">本周内完成</SelectItem>
-                      <SelectItem value="anytime">任何时候</SelectItem>
+                      <SelectItem value="today">{t('timeSensitivity.today')}</SelectItem>
+                      <SelectItem value="this_week">{t('timeSensitivity.this_week')}</SelectItem>
+                      <SelectItem value="anytime">{t('timeSensitivity.anytime')}</SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormDescription>任务的紧急程度</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -192,11 +191,11 @@ export function EditTaskDialog({ task, open, onOpenChange }: EditTaskDialogProps
               name="estimated_duration"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>预估时长（分钟）</FormLabel>
+                  <FormLabel>{t('create.durationLabel')}</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
-                      placeholder="例如：60"
+                      placeholder={t('create.durationPlaceholder')}
                       {...field}
                       value={field.value ?? ''}
                       onChange={e => {
@@ -205,7 +204,7 @@ export function EditTaskDialog({ task, open, onOpenChange }: EditTaskDialogProps
                       }}
                     />
                   </FormControl>
-                  <FormDescription>完成此任务预计需要的时间（分钟）</FormDescription>
+                  <FormDescription>{t('create.durationUnit')}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -218,10 +217,10 @@ export function EditTaskDialog({ task, open, onOpenChange }: EditTaskDialogProps
                 onClick={() => onOpenChange(false)}
                 disabled={isSubmitting}
               >
-                取消
+                {t('create.cancelButton')}
               </Button>
               <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? '更新中...' : '更新任务'}
+                {t('edit.submitButton')}
               </Button>
             </DialogFooter>
           </form>

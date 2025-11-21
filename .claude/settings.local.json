@@ -41,7 +41,16 @@
       "Bash(pnpm --filter web add:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(apps/web/src/types/database.types.generated.ts)",
+      "Bash(pnpm list:*)",
+      "Bash(npx tsc:*)",
+      "Bash(pnpm --filter web lint:*)",
+      "Bash(pnpm --filter web type-check:*)",
+      "Bash(if not exist \"d:\\bmad\\todo-list\\docs\\qa\\gates\" mkdir \"d:\\bmad\\todo-list\\docs\\qa\\gates\")",
+      "Bash(for file in d:/bmad/todo-list/docs/stories/story-1.*.md)",
+      "Bash(for:*)",
+      "Bash(do echo '=== $file ===')"
     ],
     "deny": [],
     "ask": []

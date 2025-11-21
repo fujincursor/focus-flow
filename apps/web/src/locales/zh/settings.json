@@ -1,0 +1,59 @@
+{
+  "page": {
+    "title": "设置",
+    "subtitle": "管理您的偏好设置"
+  },
+  "sections": {
+    "account": "账户",
+    "appearance": "外观",
+    "pomodoro": "番茄钟",
+    "notifications": "通知"
+  },
+  "account": {
+    "email": "邮箱",
+    "signOut": "退出登录",
+    "signOutConfirm": "确定要退出登录吗？"
+  },
+  "appearance": {
+    "language": "语言",
+    "languageDescription": "选择您的首选语言",
+    "theme": "主题",
+    "themeDescription": "选择您的首选主题",
+    "themeLight": "浅色",
+    "themeDark": "深色",
+    "themeSystem": "跟随系统"
+  },
+  "pomodoro": {
+    "workDuration": "工作时长",
+    "workDurationDescription": "每个工作时段的时长",
+    "shortBreak": "短休息",
+    "shortBreakDescription": "短休息的时长",
+    "longBreak": "长休息",
+    "longBreakDescription": "长休息的时长",
+    "sessionsBeforeLongBreak": "长休息前的工作次数",
+    "sessionsBeforeLongBreakDescription": "长休息前需要完成的工作时段数",
+    "autoStartBreaks": "自动开始休息",
+    "autoStartBreaksDescription": "自动开始休息计时器",
+    "autoStartPomodoros": "自动开始番茄钟",
+    "autoStartPomodorosDescription": "自动开始下一个工作时段",
+    "minutes": "分钟",
+    "sessions": "次"
+  },
+  "notifications": {
+    "desktop": "桌面通知",
+    "desktopDescription": "显示计时器事件的桌面通知",
+    "sound": "声音提醒",
+    "soundDescription": "计时器完成时播放声音"
+  },
+  "actions": {
+    "save": "保存修改",
+    "cancel": "取消",
+    "reset": "恢复默认"
+  },
+  "messages": {
+    "saveSuccess": "设置保存成功",
+    "saveError": "设置保存失败",
+    "resetSuccess": "已恢复默认设置",
+    "signOutSuccess": "退出登录成功"
+  }
+}

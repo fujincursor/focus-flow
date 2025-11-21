@@ -83,6 +83,41 @@ export interface Database {
           updated_at?: string
         }
       }
+      pomodoro_sessions: {
+        Row: {
+          id: string
+          user_id: string
+          task_id: string | null
+          session_type: 'work' | 'rest'
+          start_time: string
+          end_time: string | null
+          duration: number
+          completed: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          task_id?: string | null
+          session_type: 'work' | 'rest'
+          start_time?: string
+          end_time?: string | null
+          duration?: number
+          completed?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          task_id?: string | null
+          session_type?: 'work' | 'rest'
+          start_time?: string
+          end_time?: string | null
+          duration?: number
+          completed?: boolean
+          created_at?: string
+        }
+      }
     }
     Views: {}
     Functions: {}

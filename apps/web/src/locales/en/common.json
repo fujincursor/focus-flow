@@ -1,0 +1,52 @@
+{
+  "app": {
+    "name": "Focus Flow",
+    "tagline": "Focus on what matters, one task at a time"
+  },
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "confirm": "Confirm",
+    "close": "Close"
+  },
+  "navigation": {
+    "menu": "Menu",
+    "currentView": "Focus Now",
+    "currentViewDescription": "Focus on what matters most right now",
+    "tasks": "All Tasks",
+    "tasksDescription": "View and manage all your tasks",
+    "dailySummary": "Daily Summary",
+    "dailySummaryDescription": "Review your daily progress",
+    "statistics": "Statistics",
+    "statisticsDescription": "Track your long-term progress",
+    "settings": "Settings"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "noData": "No data available"
+  },
+  "user": {
+    "defaultName": "User",
+    "profile": "Profile",
+    "logout": "Log out",
+    "logoutError": "Failed to log out"
+  },
+  "theme": {
+    "toggle": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "header": {
+    "openMenu": "Open menu"
+  },
+  "statistics": {
+    "noData": "No statistics data yet",
+    "noDataHint": "Complete more tasks, and trend charts will be displayed here"
+  }
+}

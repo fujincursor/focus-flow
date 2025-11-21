@@ -1,0 +1,47 @@
+{
+  "title": "Statistics",
+  "description": "View your Pomodoro focus statistics and trends",
+  "timeRange": {
+    "week": "Last 7 Days",
+    "month": "Last 30 Days",
+    "custom": "Custom Range"
+  },
+  "customRange": {
+    "title": "Select Date Range",
+    "description": "Choose start and end dates to view statistics",
+    "startDate": "Start Date",
+    "endDate": "End Date"
+  },
+  "metrics": {
+    "totalCompleted": "Total Completed",
+    "totalDuration": "Total Focus Time",
+    "averagePerDay": "Average per Day",
+    "completionRate": "Completion Rate",
+    "durationFormat": "{{hours}}h {{minutes}}m",
+    "durationFormatMinutes": "{{minutes}}m"
+  },
+  "charts": {
+    "completionTrend": "Completion Trend",
+    "completionTrendDesc": "Daily completed Pomodoros over time",
+    "focusDuration": "Focus Duration",
+    "focusDurationDesc": "Daily focus time in minutes",
+    "completionRate": "Completion Rate",
+    "completionRateDesc": "Completed vs interrupted Pomodoros"
+  },
+  "empty": {
+    "title": "Select a time range",
+    "description": "Choose a time range above to view your statistics",
+    "noDataTitle": "No data available",
+    "noDataHint": "Start some Pomodoro sessions to see your statistics"
+  },
+  "errors": {
+    "title": "Failed to load statistics",
+    "loadFailed": "Could not load statistics data. Please try again.",
+    "selectDateRange": "Please select both start and end dates",
+    "invalidDateRange": "Start date must be before end date"
+  },
+  "actions": {
+    "retry": "Retry",
+    "loadData": "Load Data"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "timer": {
+    "idle": "番茄工作法",
+    "working": "专注工作中",
+    "paused": "已暂停",
+    "resting": "休息时间",
+    "timeRemaining": "剩余时间",
+    "startWork": "开始",
+    "startRest": "开始休息",
+    "pause": "暂停",
+    "resume": "继续",
+    "stop": "停止",
+    "minutes": "{{count}} 分",
+    "seconds": "{{count}} 秒",
+    "workBadge": "工作",
+    "restBadge": "休息",
+    "startAriaLabel": "开始番茄钟",
+    "pauseAriaLabel": "暂停",
+    "stopAriaLabel": "停止",
+    "resumeAriaLabel": "继续"
+  },
+  "workComplete": {
+    "title": "工作时段完成！",
+    "description": "做得好！您已完成一个专注工作时段。",
+    "takeBreak": "休息一下",
+    "continueWorking": "继续工作",
+    "nextTask": "下一任务"
+  },
+  "restComplete": {
+    "title": "休息完成！",
+    "description": "休息时间结束。准备继续工作了吗？",
+    "startWork": "开始工作",
+    "skipWork": "稍后再说"
+  },
+  "session": {
+    "workSession": "工作时段",
+    "restSession": "休息时段",
+    "completed": "已完成",
+    "interrupted": "已中断"
+  }
+}

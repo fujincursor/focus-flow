@@ -1,4 +1,6 @@
 import { Menu, User, LogOut, Settings } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '@/stores/authStore'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { Button } from '@/components/ui/button'
@@ -17,6 +19,8 @@ interface HeaderProps {
 }
 
 export function Header({ onMenuClick }: HeaderProps) {
+  const navigate = useNavigate()
+  const { t } = useTranslation('common')
   const user = useAuthStore(state => state.user)
   const signOut = useAuthStore(state => state.signOut)
 
@@ -24,12 +28,12 @@ export function Header({ onMenuClick }: HeaderProps) {
     try {
       await signOut()
     } catch (error) {
-      console.error('退出登录失败:', error)
+      console.error(t('user.logoutError'), error)
     }
   }
 
   // 如果没有用户信息，使用默认值
-  const displayName = user?.email || '用户'
+  const displayName = user?.email || t('user.defaultName')
   const displayEmail = user?.email || ''
   const displayAvatar = user?.user_metadata?.avatar_url
 
@@ -43,7 +47,7 @@ export function Header({ onMenuClick }: HeaderProps) {
             size="icon"
             className="md:hidden"
             onClick={onMenuClick}
-            aria-label="打开菜单"
+            aria-label={t('header.openMenu')}
           >
             <Menu className="h-5 w-5" />
           </Button>
@@ -81,16 +85,16 @@ export function Header({ onMenuClick }: HeaderProps) {
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <User className="mr-2 h-4 w-4" />
-              <span>个人资料</span>
+              <span>{t('user.profile')}</span>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate('/settings')}>
               <Settings className="mr-2 h-4 w-4" />
-              <span>设置</span>
+              <span>{t('navigation.settings')}</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>
               <LogOut className="mr-2 h-4 w-4" />
-              <span>退出登录</span>
+              <span>{t('user.logout')}</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
           </DropdownMenu>

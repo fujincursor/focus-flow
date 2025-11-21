@@ -1,0 +1,96 @@
+{
+  "loading": "Loading tasks...",
+  "page": {
+    "title": "Focus Now",
+    "subtitle": "Focus on what matters most, one task at a time"
+  },
+  "noTask": {
+    "title": "All Done!",
+    "noTasksMessage": "No tasks yet. Create your first task to get started!",
+    "allDoneMessage": "All current tasks are handled. Enjoy your free time!",
+    "createButton": "Create New Task",
+    "description": "Select a task from your task list to start focusing",
+    "button": "Go to Tasks"
+  },
+  "task": {
+    "currentTask": "Current Task",
+    "description": "Description",
+    "estimatedDuration": "Estimated Duration",
+    "timeSpent": "Time Spent",
+    "pomodorosCompleted": "Pomodoros Completed",
+    "minutes": "minutes",
+    "pomodoros": "pomodoros"
+  },
+  "timer": {
+    "work": "Work",
+    "shortBreak": "Short Break",
+    "longBreak": "Long Break",
+    "start": "Start",
+    "pause": "Pause",
+    "resume": "Resume",
+    "stop": "Stop",
+    "skip": "Skip",
+    "complete": "Complete Task"
+  },
+  "status": {
+    "ready": "Ready to start",
+    "working": "Focus time!",
+    "paused": "Paused",
+    "breakTime": "Break time!",
+    "completed": "Session completed!",
+    "offline": "Offline Mode"
+  },
+  "progress": {
+    "label": "Task Progress",
+    "lastTask": "This is the last task!",
+    "remaining": "{{count}} tasks remaining"
+  },
+  "shortcuts": {
+    "hint": "Tip: Use keyboard shortcuts for efficiency",
+    "complete": "Complete task",
+    "next": "Next",
+    "previous": "Previous",
+    "summary": "Shortcuts: Space Complete | →/N Next | ←/P Previous"
+  },
+  "navigation": {
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "celebration": {
+    "message": "Awesome!"
+  },
+  "actions": {
+    "completeTask": "Mark Task as Complete",
+    "switchTask": "Switch to Another Task",
+    "abandonTask": "Abandon Current Task"
+  },
+  "dialogs": {
+    "completeTask": {
+      "title": "Complete Task",
+      "description": "Mark this task as complete and move to the next one?",
+      "confirm": "Complete",
+      "cancel": "Cancel"
+    },
+    "switchTask": {
+      "title": "Switch Task",
+      "description": "Your current progress will be saved. Switch to another task?",
+      "confirm": "Switch",
+      "cancel": "Stay"
+    },
+    "abandonTask": {
+      "title": "Abandon Task",
+      "description": "Stop working on this task without completing it?",
+      "confirm": "Abandon",
+      "cancel": "Cancel"
+    }
+  },
+  "messages": {
+    "taskCompleted": "Task completed successfully!",
+    "taskSwitched": "Switched to new task",
+    "sessionStarted": "Focus session started",
+    "sessionPaused": "Session paused",
+    "sessionResumed": "Session resumed",
+    "breakStarted": "Break started",
+    "pomodoroCompleted": "Pomodoro completed! Great work!"
+  }
+}
